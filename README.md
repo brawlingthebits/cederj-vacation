@@ -30,9 +30,6 @@ Este projeto é uma aplicação Flask simples que calcula a nota necessária na 
    ```bash
    pip install flask
    ```
-
-Você tem razão. Dependendo da versão do Flask e da forma como o ambiente está configurado, a execução do aplicativo pode variar. A seguir, apresento instruções atualizadas para executar a aplicação Flask de duas maneiras diferentes: usando o comando `python app.py` e utilizando a interface de linha de comando do Flask (`flask run`).
-
 ---
 
 ## Executando com `python app.py`
