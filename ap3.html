@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Vou passar, CEDERJ?</title>
+		<title>Calcular AP3 - CEDERJ</title>
 		<style>
 			        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -70,6 +70,25 @@
 			    border: 2px solid #ffcc00;
 			}
 
+			.back-button {
+			    display: inline-block;
+			    margin-bottom: 20px;
+			    padding: 12px 20px;
+			    background-color: #2d2d2d;
+			    color: #ffcc00;
+			    text-decoration: none;
+			    border-radius: 8px;
+			    transition: all 0.3s ease;
+			    font-size: 0.65em;
+			    border: 2px solid #ffcc00;
+			}
+
+			.back-button:hover {
+			    background-color: #3d3d3d;
+			    transform: translateX(-5px);
+			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+			}
+
 			h1 {
 			    color: #ffcc00;
 			    margin-bottom: 15px;
@@ -108,9 +127,9 @@
 
 			input:focus {
 			    outline: none;
-			    border-color: #ff66c4;
+			    border-color: #6c5ce7;
 			    background-color: #3d3d3d;
-			    box-shadow: 0 0 10px rgba(255, 102, 196, 0.3);
+			    box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
 			}
 
 			input::placeholder {
@@ -121,7 +140,7 @@
 			button {
 			    width: 100%;
 			    padding: 18px;
-			    background-color: #ff66c4;
+			    background-color: #6c5ce7;
 			    color: white;
 			    border: none;
 			    border-radius: 8px;
@@ -134,7 +153,7 @@
 			}
 
 			button:hover {
-			    background-color: #ffcc00;
+			    background-color: #5f4dd1;
 			    transform: translateY(-2px);
 			    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 			}
@@ -142,14 +161,6 @@
 			button:active {
 			    transform: translateY(0);
 			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-
-			button.secondary {
-			    background-color: #6c5ce7;
-			}
-
-			button.secondary:hover {
-			    background-color: #5f4dd1;
 			}
 
 			.result {
@@ -162,6 +173,7 @@
 			    border-radius: 8px;
 			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 			    border: 2px solid #ffcc00;
+			    white-space: pre-line;
 			    opacity: 0;
 			    visibility: hidden;
 			    transition: all 0.4s ease;
@@ -173,20 +185,19 @@
 			    animation: fadeIn 0.4s ease-out;
 			}
 
-			.cta-box {
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 10px;
-			    margin-top: 25px;
-			    border: 2px dashed #ff66c4;
-			    animation: fadeIn 0.8s ease-out;
+			.result.success {
+			    color: #00ff88;
+			    border-color: #00ff88;
+			    animation: fadeIn 0.4s ease-out, pulse 2s ease-in-out;
 			}
 
-			.cta-text {
-			    color: #ff66c4;
-			    font-size: 0.75em;
-			    margin-bottom: 15px;
-			    line-height: 1.8;
+			@keyframes pulse {
+			    0%, 100% {
+			        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+			    }
+			    50% {
+			        box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+			    }
 			}
 
 			.footer {
@@ -260,11 +271,11 @@
 			        font-size: 0.9em;
 			    }
 
-			    .result {
-			        font-size: 0.85em;
+			    .back-button {
+			        font-size: 0.75em;
 			    }
 
-			    .cta-text {
+			    .result {
 			        font-size: 0.85em;
 			    }
 
@@ -295,11 +306,11 @@
 			        font-size: 1em;
 			    }
 
-			    .result {
-			        font-size: 0.9em;
+			    .back-button {
+			        font-size: 0.8em;
 			    }
 
-			    .cta-text {
+			    .result {
 			        font-size: 0.9em;
 			    }
 			}
@@ -307,53 +318,38 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1>Calcular Nota AP2</h1>
-			<h2>Digite suas notas:</h2>
-			<form id="notaForm">
-				<label for="ad1">Nota da AD1:</label>
-				<input type="text" id="ad1" name="ad1" placeholder="Ex: 7,5 ou 7.5" required />
+			<a href="/" class="back-button">← Voltar para AP2</a>
 
-				<label for="ap1">Nota da AP1:</label>
-				<input type="text" id="ap1" name="ap1" placeholder="Ex: 8,0 ou 8.0" required />
+			<h1>Calcular Nota AP3</h1>
+			<h2>Última chance! Média final: 5</h2>
 
-				<label for="ad2">Nota da AD2:</label>
-				<input type="text" id="ad2" name="ad2" placeholder="Ex: 6,5 ou 6.5" required />
+			<form id="ap3Form">
+				<label for="n1">N1 (média de AD1 e AP1):</label>
+				<input type="text" id="n1" name="n1" placeholder="Ex: 7,5 ou 7.5" required />
 
-				<button type="submit">Calcular AP2</button>
+				<label for="n2">N2 (média de AD2 e AP2):</label>
+				<input type="text" id="n2" name="n2" placeholder="Ex: 5,0 ou 5.0" required />
+
+				<button type="submit">Calcular AP3</button>
 			</form>
 
-			<p id="result" class="result"></p>
-
-			<div class="cta-box">
-				<p class="cta-text">
-					Não teve jeito?<br />
-					Faça aqui o cálculo da AP3
-				</p>
-				<a href="/ap3.html">
-					<button type="button" class="secondary">Calcular AP3</button>
-				</a>
-			</div>
+			<p id="resultAP3" class="result"></p>
 		</div>
 
 		<script>
-			// Easter egg no console - old school style
+			// Easter egg no console - old school style AP3
 			console.log('%c', 'font-size: 1px;');
-			console.log('%c╔═══════════════════════════════════════════════════════╗', 'color: #00ff00; font-family: monospace;');
-			console.log('%c║   CEDERJ VACATION CALCULATOR v1.0                    ║', 'color: #00ff00; font-family: monospace;');
-			console.log('%c║   [Sistema de Cálculo de Notas Acadêmicas]          ║', 'color: #00ff00; font-family: monospace;');
-			console.log('%c╚═══════════════════════════════════════════════════════╝', 'color: #00ff00; font-family: monospace;');
+			console.log('%c╔═══════════════════════════════════════════════════════╗', 'color: #ff0000; font-family: monospace; font-weight: bold;');
+			console.log('%c║ >>> AP3 CALCULATOR - LAST CHANCE MODE ACTIVATED <<< ║', 'color: #ff0000; font-family: monospace; font-weight: bold;');
+			console.log('%c╚═══════════════════════════════════════════════════════╝', 'color: #ff0000; font-family: monospace; font-weight: bold;');
 			console.log('%c', 'font-size: 1px;');
-			console.log('%c> ALERT: Estudante curioso detectado!', 'color: #ff0000; font-family: monospace;');
-			console.log('%c> Analisando intenções...', 'color: #ffcc00; font-family: monospace;');
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c[SCAN COMPLETE]', 'color: #00ff00; font-family: monospace;');
-			console.log('%cSe você está aqui, duas possibilidades:', 'color: #ffffff; font-family: monospace;');
-			console.log('%c  [1] Você é dev e tá checando o código (salve, colega!)', 'color: #00d2ff; font-family: monospace;');
-			console.log('%c  [2] Você tá tentando me hacker...', 'color: #ff6b6b; font-family: monospace;');
+			console.log('%c[ALERT] Por que está usando F12 no meu site?', 'color: #ffcc00; font-family: monospace;');
+			console.log('%c[QUERY] Quer me hackear?', 'color: #ff6b6b; font-family: monospace;');
 			console.log('%c-- Site reformulado numa sexta-feira depois de muito chá de hibisco', 'color: #888888; font-style: italic; font-family: monospace;');
 			console.log('%c', 'font-size: 1px;');
+			console.log('%c[EOF]', 'color: #888888; font-family: monospace;');
 
-			document.getElementById('notaForm').onsubmit = async function(event) {
+			document.getElementById('ap3Form').onsubmit = async function(event) {
 			    event.preventDefault();
 
 			    // Função auxiliar para normalizar entrada (aceita vírgula e ponto)
@@ -361,44 +357,44 @@
 			        return parseFloat(valor.replace(',', '.'));
 			    }
 
-			    let ad1 = parseNota(document.getElementById('ad1').value);
-			    let ap1 = parseNota(document.getElementById('ap1').value);
-			    let ad2 = parseNota(document.getElementById('ad2').value);
-			    let resultElement = document.getElementById('result');
+			    let n1 = parseNota(document.getElementById('n1').value);
+			    let n2 = parseNota(document.getElementById('n2').value);
+			    let resultElement = document.getElementById('resultAP3');
 
 			    // Validação client-side
-			    if (isNaN(ad1) || isNaN(ap1) || isNaN(ad2)) {
+			    if (isNaN(n1) || isNaN(n2)) {
 			        resultElement.innerText = 'Por favor, preencha todos os campos com números válidos.';
+			        resultElement.classList.remove('success');
 			        resultElement.classList.add('visible');
 			        return;
 			    }
 
-			    if (ad1 < 0 || ad1 > 10 || ap1 < 0 || ap1 > 10 || ad2 < 0 || ad2 > 10) {
+			    if (n1 < 0 || n1 > 10 || n2 < 0 || n2 > 10) {
 			        resultElement.innerText = 'As notas devem estar entre 0 e 10.';
+			        resultElement.classList.remove('success');
 			        resultElement.classList.add('visible');
 			        return;
 			    }
 
-			    try {
-			        let response = await fetch('/calculate', {
-			            method: 'POST',
-			            headers: {
-			                'Content-Type': 'application/json'
-			            },
-			            body: JSON.stringify({ ad1, ap1, ad2 })
-			        });
+			    // Calcular média atual
+			    let mediaAtual = (n1 + n2) / 2;
 
-			        let result = await response.json();
-
-			        if (response.ok && result.success) {
-			            resultElement.innerText = `Você precisa tirar pelo menos ${result.nota_ap2.toFixed(2)} na AP2 para alcançar uma média final de 6.`;
-			        } else {
-			            resultElement.innerText = result.error || 'Erro ao calcular. Tente novamente.';
-			        }
-			    } catch (error) {
-			        resultElement.innerText = 'Erro de conexão. Tente novamente.';
+			    // Se já passou (média >= 6, não precisa de AP3)
+			    if (mediaAtual >= 6) {
+			        resultElement.innerText = `*** PARABÉNS! VOCÊ JÁ PASSOU! ***\n\nMédia final: ${mediaAtual.toFixed(2)}\n\nNão precisa fazer a AP3!\nVocê pode relaxar e curtir as férias!`;
+			        resultElement.classList.add('success');
+			        resultElement.classList.add('visible');
+			        return;
 			    }
 
+			    // Calcular nota necessária na AP3 para média final 5
+			    // NF = [MAIOR(N1, N2) + AP3] / 2 >= 5
+			    // Logo: AP3 >= 10 - MAIOR(N1, N2)
+			    let maiorNota = Math.max(n1, n2);
+			    let ap3Necessario = 10 - maiorNota;
+
+			    resultElement.innerText = `Você precisa tirar pelo menos ${ap3Necessario.toFixed(2)} na AP3 para alcançar média final 5.\n\nSua média atual: ${mediaAtual.toFixed(2)}\nMaior nota (N1 ou N2): ${maiorNota.toFixed(2)}`;
+			    resultElement.classList.remove('success');
 			    resultElement.classList.add('visible');
 			}
 		</script>
