@@ -3,6 +3,18 @@
 
 Este projeto é uma aplicação Flask simples que calcula a nota necessária na prova AP2 para que a média final do aluno seja no mínimo 6, com base nas notas de AD1, AP1 e AD2.
 
+### Calculadora de Biblioteconomia
+
+O site abre na calculadora de Computação. O botão "Ir para Biblioteconomia" leva ao mesmo fluxo em duas telas, com a AD valendo 40% e a AP valendo 60%:
+
+- `/biblioteconomia.html`: quanto você precisa tirar na AP2 (ou na AP, em disciplinas de 30h) para fechar média 6.
+- `/biblioteconomia-ap3.html`: com N1 e N2 do SCA, se você já passou ou quanto precisa na AP3 para chegar a 5.
+
+Nas duas telas você escolhe a carga horária da disciplina:
+
+- **60h (regra #19)**: N1 e N2 = (AD×4 + AP×6)/10; N = (N1 + N2)/2; se N ≥ 6, aprovado. Senão, NF = [MAIOR(N1, N2) + AP3]/2.
+- **30h (regras #37 e #38)**: só uma AD e uma AP; N = (AD×4 + AP×6)/10; NF = (N + AP3)/2.
+
 ## Requisitos
 
 - Python 3.x

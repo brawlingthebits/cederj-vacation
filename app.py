@@ -93,6 +93,16 @@ def ap3_page():
     return send_from_directory(".", "ap3.html")
 
 
+@app.route("/biblioteconomia.html")
+def biblioteconomia_page():
+    return send_from_directory(".", "biblioteconomia.html")
+
+
+@app.route("/biblioteconomia-ap3.html")
+def biblioteconomia_ap3_page():
+    return send_from_directory(".", "biblioteconomia-ap3.html")
+
+
 @app.route("/calculate", methods=["POST"])
 def calculate():
     try:
