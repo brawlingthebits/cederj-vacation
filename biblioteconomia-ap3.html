@@ -4,476 +4,158 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Calcular AP3 - Biblioteconomia</title>
-		<style>
-			        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-			* {
-			    margin: 0;
-			    padding: 0;
-			    box-sizing: border-box;
-			}
-
-			body {
-			    font-family: 'Press Start 2P', cursive;
-			    background-color: #1a1a1a;
-			    color: #fff;
-			    min-height: 100vh;
-			    display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center;
-			    padding: 15px;
-			    line-height: 1.6;
-			}
-
-			/* Animação de fade in */
-			@keyframes fadeIn {
-			    from {
-			        opacity: 0;
-			        transform: translateY(20px);
-			    }
-			    to {
-			        opacity: 1;
-			        transform: translateY(0);
-			    }
-			}
-
-			/* Efeito scanline sutil */
-			body::before {
-			    content: '';
-			    position: fixed;
-			    top: 0;
-			    left: 0;
-			    width: 100%;
-			    height: 100%;
-			    background: repeating-linear-gradient(
-			        0deg,
-			        rgba(0, 0, 0, 0.15),
-			        rgba(0, 0, 0, 0.15) 1px,
-			        transparent 1px,
-			        transparent 2px
-			    );
-			    pointer-events: none;
-			    z-index: 1000;
-			}
-
-			.container {
-			    background-color: #333;
-			    padding: 25px 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-bottom: 20px;
-			    animation: fadeIn 0.6s ease-out;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button {
-			    display: inline-block;
-			    margin-bottom: 20px;
-			    padding: 12px 20px;
-			    background-color: #2d2d2d;
-			    color: #ffcc00;
-			    text-decoration: none;
-			    border-radius: 8px;
-			    transition: all 0.3s ease;
-			    font-size: 0.65em;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button:hover {
-			    background-color: #3d3d3d;
-			    transform: translateX(-5px);
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-			}
-
-			h1 {
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			    font-size: 1.2em;
-			    line-height: 1.4;
-			    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			h2 {
-			    color: #ff66c4;
-			    margin-bottom: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.5;
-			}
-
-			label {
-			    display: block;
-			    margin-bottom: 8px;
-			    color: #fff;
-			    text-align: left;
-			    font-size: 0.7em;
-			}
-
-			input {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.75em;
-			    transition: all 0.3s ease;
-			}
-
-			input:focus {
-			    outline: none;
-			    border-color: #6c5ce7;
-			    background-color: #3d3d3d;
-			    box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
-			}
-
-			input::placeholder {
-			    color: #888;
-			    font-size: 0.7em;
-			}
-
-			button {
-			    width: 100%;
-			    padding: 18px;
-			    background-color: #6c5ce7;
-			    color: white;
-			    border: none;
-			    border-radius: 8px;
-			    cursor: pointer;
-			    font-size: 0.8em;
-			    font-family: 'Press Start 2P', cursive;
-			    margin-top: 10px;
-			    transition: all 0.3s ease;
-			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-			}
-
-			button:hover {
-			    background-color: #5f4dd1;
-			    transform: translateY(-2px);
-			    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-			}
-
-			button:active {
-			    transform: translateY(0);
-			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-
-			.result {
-			    margin-top: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.6;
-			    color: #ffcc00;
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 8px;
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    border: 2px solid #ffcc00;
-			    white-space: pre-line;
-			    opacity: 0;
-			    visibility: hidden;
-			    transition: all 0.4s ease;
-			}
-
-			.result.visible {
-			    opacity: 1;
-			    visibility: visible;
-			    animation: fadeIn 0.4s ease-out;
-			}
-
-			.result.success {
-			    color: #00ff88;
-			    border-color: #00ff88;
-			    animation: fadeIn 0.4s ease-out, pulse 2s ease-in-out;
-			}
-
-			@keyframes pulse {
-			    0%, 100% {
-			        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    }
-			    50% {
-			        box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-			    }
-			}
-
-			.footer {
-			    background-color: #333;
-			    padding: 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-top: 20px;
-			    border: 2px solid #ffcc00;
-			    animation: fadeIn 1s ease-out;
-			}
-
-			.footer-text {
-			    font-size: 0.65em;
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			}
-
-			.footer-icons {
-			    display: flex;
-			    justify-content: center;
-			    gap: 20px;
-			}
-
-			.icon-link {
-			    display: inline-block;
-			    transition: transform 0.3s ease;
-			}
-
-			.footer-icon {
-			    width: 40px;
-			    height: 40px;
-			    transition: opacity 0.3s;
-			    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-			}
-
-			.icon-link:hover {
-			    transform: scale(1.1) translateY(-3px);
-			}
-
-			.footer-icon:hover {
-			    opacity: 0.8;
-			}
-
-			/* Tablet */
-			@media (min-width: 768px) {
-			    body {
-			        padding: 30px;
-			    }
-
-			    h1 {
-			        font-size: 1.5em;
-			    }
-
-			    h2 {
-			        font-size: 0.85em;
-			    }
-
-			    label {
-			        font-size: 0.75em;
-			    }
-
-			    input {
-			        font-size: 0.85em;
-			    }
-
-			    button {
-			        font-size: 0.9em;
-			    }
-
-			    .back-button {
-			        font-size: 0.75em;
-			    }
-
-			    .result {
-			        font-size: 0.85em;
-			    }
-
-			    .footer-text {
-			        font-size: 0.75em;
-			    }
-			}
-
-			/* Desktop */
-			@media (min-width: 1024px) {
-			    h1 {
-			        font-size: 1.6em;
-			    }
-
-			    h2 {
-			        font-size: 0.95em;
-			    }
-
-			    label {
-			        font-size: 0.8em;
-			    }
-
-			    input {
-			        font-size: 0.9em;
-			    }
-
-			    button {
-			        font-size: 1em;
-			    }
-
-			    .back-button {
-			        font-size: 0.8em;
-			    }
-
-			    .result {
-			        font-size: 0.9em;
-			    }
-			}
-			select {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.6em;
-			    line-height: 1.6;
-			}
-
-			select:focus {
-			    outline: none;
-			    border-color: #6c5ce7;
-			}
-
-			.hint {
-			    font-size: 0.55em;
-			    color: #aaa;
-			    text-align: left;
-			    margin: -10px 0 20px;
-			    line-height: 1.8;
-			}
-
-			.hidden {
-			    display: none;
-			}
-		</style>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Libre+Caslon+Display&family=Special+Elite&family=Homemade+Apple&display=swap" />
+		<link rel="stylesheet" href="/static/biblioteconomia.css" />
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='6' width='28' height='20' rx='2' fill='%23fdfcf7' stroke='%234a2e1c' stroke-width='2'/%3E%3Cpath d='M2 12h28' stroke='%23d8574b' stroke-width='2'/%3E%3Cpath d='M7 17h18M7 21h12' stroke='%23b9d3ea' stroke-width='2'/%3E%3C/svg%3E" />
 	</head>
 	<body>
-		<div class="container">
-			<a href="/biblioteconomia.html" class="back-button">← Voltar para AP2</a>
+		<div class="gaveta">
+			<a href="/" class="voltar">← Ir para Computação</a>
 
-			<h1>Calcular Nota AP3</h1>
-			<h2>Biblioteconomia - última chance! Média final: 5</h2>
-
-			<form id="ap3Form">
-				<label for="carga">Carga horária da disciplina:</label>
-				<select id="carga">
-					<option value="60">60h (N1 e N2)</option>
-					<option value="30">30h (só N1 ou só N2)</option>
-				</select>
-				<p class="hint" id="hintCarga"></p>
-
-				<div id="campos60">
-					<label for="n1">N1 (média de AD1 e AP1):</label>
-					<input type="text" id="n1" name="n1" placeholder="Ex: 7,5 ou 7.5" inputmode="decimal" />
-
-					<label for="n2">N2 (média de AD2 e AP2):</label>
-					<input type="text" id="n2" name="n2" placeholder="Ex: 5,0 ou 5.0" inputmode="decimal" />
+			<header class="etiqueta">
+				<div class="etiqueta-papel">
+					<p>CEDERJ · Vou passar?</p>
+					<h1>Biblioteconomia</h1>
 				</div>
+			</header>
+			<span class="puxador" aria-hidden="true"></span>
 
-				<div id="campos30" class="hidden">
-					<label for="n">N1 ou N2 (a única que aparece no SCA):</label>
-					<input type="text" id="n" name="n" placeholder="Ex: 4,0 ou 4.0" inputmode="decimal" />
-				</div>
+			<div class="fichario">
+				<nav class="abas" aria-label="Calculadoras">
+					<a href="/biblioteconomia.html" class="aba">AP2</a>
+					<a href="/biblioteconomia-ap3.html" class="aba" aria-current="page">AP3</a>
+				</nav>
 
-				<button type="submit">Calcular AP3</button>
-			</form>
+				<main class="ficha">
+					<div class="cabecalho">
+						<span class="chamada" aria-hidden="true">020
+C389v
+AP3</span>
+						<div class="cabecalho-texto">
+							<h2>Calcular nota da AP3</h2>
+							<p>Última chance! Média final: 5.</p>
+						</div>
+					</div>
 
-			<p id="result" class="result"></p>
+					<form id="ap3Form">
+						<fieldset>
+							<legend>Carga horária da disciplina</legend>
+							<div class="opcoes">
+								<label class="opcao"><input type="radio" name="carga" id="carga60" value="60" checked /> 60h</label>
+								<label class="opcao"><input type="radio" name="carga" id="carga30" value="30" /> 30h</label>
+							</div>
+							<p class="nota-rodape" id="hintCarga"></p>
+						</fieldset>
+
+						<div class="campos" id="campos60">
+								<div class="campo">
+									<label for="n1">N1</label>
+									<input type="text" id="n1" name="n1" placeholder="4,0" inputmode="decimal" autocomplete="off" />
+								</div>
+								<div class="campo">
+									<label for="n2">N2</label>
+									<input type="text" id="n2" name="n2" placeholder="3,5" inputmode="decimal" autocomplete="off" />
+								</div>
+						</div>
+
+						<div class="campos hidden" id="campos30">
+								<div class="campo">
+									<label for="n">N1 ou N2</label>
+									<input type="text" id="n" name="n" placeholder="4,0" inputmode="decimal" autocomplete="off" />
+								</div>
+						</div>
+
+						<button type="submit" class="botao">Calcular AP3</button>
+					</form>
+
+					<div id="result" class="resultado hidden" role="status" aria-live="polite">
+						<span class="carimbo">
+							<span class="carimbo-texto"></span>
+							<span class="carimbo-data"></span>
+						</span>
+						<p class="detalhe"><span class="detalhe-leitura"></span><span class="detalhe-digitado" aria-hidden="true"></span></p>
+					</div>
+
+					<p class="pistas">1. Biblioteconomia. 2. NF = [MAIOR(N1, N2) + AP3]/2. I. CEDERJ. II. Título: Vou passar?</p>
+				</main>
+			</div>
 		</div>
 
+		<footer class="emprestimo">
+			<div class="cartao">
+				<p class="cartao-titulo">Feito por Beatriz Costa, especialmente, pra</p>
+				<div class="cartao-colunas" aria-hidden="true">
+					<span>Data</span>
+					<span>Leitora</span>
+				</div>
+				<div class="cartao-linha">
+					<span class="cartao-data">15 AGO 2025</span>
+					<span class="assinatura">Brenda Alves</span>
+				</div>
+				<div class="cartao-linha" aria-hidden="true"></div>
+			</div>
+			<div class="bolso">
+				<p class="bolso-titulo">Biblioteca · CEDERJ</p>
+				<div class="contatos">
+					<a href="mailto:devbcdc@proton.me" target="_blank">e-mail</a>
+					<a href="https://www.github.com/brawlingthebits" target="_blank">GitHub</a>
+					<a href="https://www.linkedin.com/in/dev-bcdc/" target="_blank">LinkedIn</a>
+				</div>
+			</div>
+		</footer>
+
+		<script src="/static/biblioteconomia.js"></script>
 		<script>
-			// Easter egg no console
-			console.log('%c[BIBLIO] Catalogando curiosos no console... CDD 004.6', 'color: #ff66c4; font-family: monospace;');
-			console.log('%c-- Site reformulado numa sexta-feira depois de muito chá de hibisco', 'color: #888888; font-style: italic; font-family: monospace;');
+			ligarCargaHoraria({
+			    '60': 'Use N1 e N2 como aparecem no SCA. Regra #19.',
+			    '30': 'Use a única nota (N1 ou N2) que aparece no SCA. Regra #37 ou #38.'
+			});
 
-			// Função auxiliar para normalizar entrada (aceita vírgula e ponto)
-			function parseNota(valor) {
-			    return parseFloat(valor.replace(',', '.'));
-			}
-
-			function notaValida(valor) {
-			    return !isNaN(valor) && valor >= 0 && valor <= 10;
-			}
-
-			function mostrar(texto, sucesso) {
-			    const resultElement = document.getElementById('result');
-			    resultElement.innerText = texto;
-			    resultElement.classList.toggle('success', !!sucesso);
-			    resultElement.classList.add('visible');
-			}
-
-			// 60h (regra #19): se (N1 + N2)/2 >= 6 passou; senão NF = [MAIOR(N1, N2) + AP3]/2
-			// 30h (regras #37 e #38): se N >= 6 passou; senão NF = (N + AP3)/2
-			// Com AP3, precisa de NF >= 5, logo AP3 >= 10 - nota
-			const carga = document.getElementById('carga');
-
-			carga.onchange = function() {
-			    const is60 = carga.value === '60';
-			    document.getElementById('campos60').classList.toggle('hidden', !is60);
-			    document.getElementById('campos30').classList.toggle('hidden', is60);
-			    document.getElementById('hintCarga').innerText = is60
-			        ? 'Use N1 e N2 como aparecem no SCA. Regra #19.'
-			        : 'Use a nota N1 ou N2 que aparece no SCA. Regra #37 ou #38.';
-			    document.getElementById('result').classList.remove('visible', 'success');
-			};
-			carga.onchange();
-
-			document.getElementById('ap3Form').onsubmit = function(event) {
+			document.getElementById('ap3Form').onsubmit = function (event) {
 			    event.preventDefault();
 
 			    let media, notaBase, detalhes;
 
-			    if (carga.value === '60') {
-			        let n1 = parseNota(document.getElementById('n1').value);
-			        let n2 = parseNota(document.getElementById('n2').value);
+			    if (cargaHoraria() === '60') {
+			        const n1 = parseNota(document.getElementById('n1').value);
+			        const n2 = parseNota(document.getElementById('n2').value);
 
 			        if (!notaValida(n1) || !notaValida(n2)) {
-			            mostrar('Preencha N1 e N2 com notas entre 0 e 10.');
+			            carimbar('Ficha incompleta', 'Preencha N1 e N2 com notas entre 0 e 10.');
 			            return;
 			        }
 
 			        media = (n1 + n2) / 2;
 			        notaBase = Math.max(n1, n2);
-			        detalhes = `Sua média atual: ${media.toFixed(2)}\nMaior nota (N1 ou N2): ${notaBase.toFixed(2)}`;
+			        detalhes = `Média N1 e N2: ${fmt(media)}\nMaior nota (N1 ou N2): ${fmt(notaBase)}`;
 			    } else {
-			        let n = parseNota(document.getElementById('n').value);
+			        const n = parseNota(document.getElementById('n').value);
 
 			        if (!notaValida(n)) {
-			            mostrar('Preencha a nota com um número entre 0 e 10.');
+			            carimbar('Ficha incompleta', 'Preencha a nota com um número entre 0 e 10.');
 			            return;
 			        }
 
 			        media = n;
 			        notaBase = n;
-			        detalhes = `Sua nota atual: ${n.toFixed(2)}`;
+			        detalhes = `Sua nota: ${fmt(n)}`;
 			    }
 
 			    if (media >= 6) {
-			        mostrar(`*** PARABÉNS! VOCÊ JÁ PASSOU! ***\n\nMédia final: ${media.toFixed(2)}\n\nNão precisa fazer a AP3!\nVocê pode relaxar e curtir as férias!`, true);
+			        carimbar('Aprovada', `Média final: ${fmt(media)}\nNão precisa fazer a AP3. Boas férias!`, true);
 			        return;
 			    }
 
-			    let ap3Necessario = 10 - notaBase;
+			    const ap3Necessaria = 10 - notaBase;
 
-			    if (ap3Necessario > 10) {
-			        mostrar(`Nem com 10 na AP3 dá pra chegar em 5. :(\n\n${detalhes}`);
+			    if (ap3Necessaria > 10) {
+			        carimbar('Sem chance', `Nem com 10 na AP3 dá pra chegar em 5.\n\n${detalhes}`);
 			    } else {
-			        mostrar(`Você precisa tirar pelo menos ${ap3Necessario.toFixed(2)} na AP3 para alcançar média final 5.\n\n${detalhes}`);
+			        carimbar(`AP3 ≥ ${fmt(ap3Necessaria)}`, `Você precisa tirar pelo menos ${fmt(ap3Necessaria)} na AP3 para fechar média final 5.\n\n${detalhes}`);
 			    }
 			};
 		</script>
-
-		<footer class="footer">
-			<p class="footer-text">Feito por Beatriz Costa</p>
-			<div class="footer-icons">
-				<a href="mailto:devbcdc@proton.me" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-mail-48.png" alt="Email" class="footer-icon" />
-				</a>
-				<a href="https://www.github.com/brawlingthebits" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" />
-				</a>
-				<a href="https://www.linkedin.com/in/dev-bcdc/" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" />
-				</a>
-			</div>
-		</footer>
 	</body>
 </html>

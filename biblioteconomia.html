@@ -4,469 +4,149 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Vou passar, CEDERJ? - Biblioteconomia</title>
-		<style>
-			        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-			* {
-			    margin: 0;
-			    padding: 0;
-			    box-sizing: border-box;
-			}
-
-			body {
-			    font-family: 'Press Start 2P', cursive;
-			    background-color: #1a1a1a;
-			    color: #fff;
-			    min-height: 100vh;
-			    display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center;
-			    padding: 15px;
-			    line-height: 1.6;
-			}
-
-			/* Animação de fade in */
-			@keyframes fadeIn {
-			    from {
-			        opacity: 0;
-			        transform: translateY(20px);
-			    }
-			    to {
-			        opacity: 1;
-			        transform: translateY(0);
-			    }
-			}
-
-			/* Efeito scanline sutil */
-			body::before {
-			    content: '';
-			    position: fixed;
-			    top: 0;
-			    left: 0;
-			    width: 100%;
-			    height: 100%;
-			    background: repeating-linear-gradient(
-			        0deg,
-			        rgba(0, 0, 0, 0.15),
-			        rgba(0, 0, 0, 0.15) 1px,
-			        transparent 1px,
-			        transparent 2px
-			    );
-			    pointer-events: none;
-			    z-index: 1000;
-			}
-
-			.container {
-			    background-color: #333;
-			    padding: 25px 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-bottom: 20px;
-			    animation: fadeIn 0.6s ease-out;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button {
-			    display: inline-block;
-			    margin-bottom: 20px;
-			    padding: 12px 20px;
-			    background-color: #2d2d2d;
-			    color: #ffcc00;
-			    text-decoration: none;
-			    border-radius: 8px;
-			    transition: all 0.3s ease;
-			    font-size: 0.65em;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button:hover {
-			    background-color: #3d3d3d;
-			    transform: translateX(-5px);
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-			}
-
-			h1 {
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			    font-size: 1.2em;
-			    line-height: 1.4;
-			    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			h2 {
-			    color: #ff66c4;
-			    margin-bottom: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.5;
-			}
-
-			label {
-			    display: block;
-			    margin-bottom: 8px;
-			    color: #fff;
-			    text-align: left;
-			    font-size: 0.7em;
-			}
-
-			input {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.75em;
-			    transition: all 0.3s ease;
-			}
-
-			input:focus {
-			    outline: none;
-			    border-color: #ff66c4;
-			    background-color: #3d3d3d;
-			    box-shadow: 0 0 10px rgba(255, 102, 196, 0.3);
-			}
-
-			input::placeholder {
-			    color: #888;
-			    font-size: 0.7em;
-			}
-
-			button {
-			    width: 100%;
-			    padding: 18px;
-			    background-color: #ff66c4;
-			    color: white;
-			    border: none;
-			    border-radius: 8px;
-			    cursor: pointer;
-			    font-size: 0.8em;
-			    font-family: 'Press Start 2P', cursive;
-			    margin-top: 10px;
-			    transition: all 0.3s ease;
-			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-			}
-
-			button:hover {
-			    background-color: #ffcc00;
-			    transform: translateY(-2px);
-			    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-			}
-
-			button:active {
-			    transform: translateY(0);
-			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-
-			button.secondary {
-			    background-color: #6c5ce7;
-			}
-
-			button.secondary:hover {
-			    background-color: #5f4dd1;
-			}
-
-			.result {
-			    margin-top: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.6;
-			    color: #ffcc00;
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 8px;
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    border: 2px solid #ffcc00;
-			    opacity: 0;
-			    visibility: hidden;
-			    transition: all 0.4s ease;
-			}
-
-			.result.visible {
-			    opacity: 1;
-			    visibility: visible;
-			    animation: fadeIn 0.4s ease-out;
-			}
-
-			.cta-box {
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 10px;
-			    margin-top: 25px;
-			    border: 2px dashed #ff66c4;
-			    animation: fadeIn 0.8s ease-out;
-			}
-
-			.cta-text {
-			    color: #ff66c4;
-			    font-size: 0.75em;
-			    margin-bottom: 15px;
-			    line-height: 1.8;
-			}
-
-			.footer {
-			    background-color: #333;
-			    padding: 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-top: 20px;
-			    border: 2px solid #ffcc00;
-			    animation: fadeIn 1s ease-out;
-			}
-
-			.footer-text {
-			    font-size: 0.65em;
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			}
-
-			.footer-icons {
-			    display: flex;
-			    justify-content: center;
-			    gap: 20px;
-			}
-
-			.icon-link {
-			    display: inline-block;
-			    transition: transform 0.3s ease;
-			}
-
-			.footer-icon {
-			    width: 40px;
-			    height: 40px;
-			    transition: opacity 0.3s;
-			    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-			}
-
-			.icon-link:hover {
-			    transform: scale(1.1) translateY(-3px);
-			}
-
-			.footer-icon:hover {
-			    opacity: 0.8;
-			}
-
-			/* Tablet */
-			@media (min-width: 768px) {
-			    body {
-			        padding: 30px;
-			    }
-
-			    h1 {
-			        font-size: 1.5em;
-			    }
-
-			    h2 {
-			        font-size: 0.85em;
-			    }
-
-			    label {
-			        font-size: 0.75em;
-			    }
-
-			    input {
-			        font-size: 0.85em;
-			    }
-
-			    button {
-			        font-size: 0.9em;
-			    }
-
-			    .result {
-			        font-size: 0.85em;
-			    }
-
-			    .cta-text {
-			        font-size: 0.85em;
-			    }
-
-			    .footer-text {
-			        font-size: 0.75em;
-			    }
-			}
-
-			/* Desktop */
-			@media (min-width: 1024px) {
-			    h1 {
-			        font-size: 1.6em;
-			    }
-
-			    h2 {
-			        font-size: 0.95em;
-			    }
-
-			    label {
-			        font-size: 0.8em;
-			    }
-
-			    input {
-			        font-size: 0.9em;
-			    }
-
-			    button {
-			        font-size: 1em;
-			    }
-
-			    .result {
-			        font-size: 0.9em;
-			    }
-
-			    .cta-text {
-			        font-size: 0.9em;
-			    }
-			}
-
-			.result.success {
-			    color: #00ff88;
-			    border-color: #00ff88;
-			}
-
-			select {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.6em;
-			    line-height: 1.6;
-			}
-
-			select:focus {
-			    outline: none;
-			    border-color: #6c5ce7;
-			}
-
-			.hint {
-			    font-size: 0.55em;
-			    color: #aaa;
-			    text-align: left;
-			    margin: -10px 0 20px;
-			    line-height: 1.8;
-			}
-
-			.hidden {
-			    display: none;
-			}
-		</style>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Libre+Caslon+Display&family=Special+Elite&family=Homemade+Apple&display=swap" />
+		<link rel="stylesheet" href="/static/biblioteconomia.css" />
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='6' width='28' height='20' rx='2' fill='%23fdfcf7' stroke='%234a2e1c' stroke-width='2'/%3E%3Cpath d='M2 12h28' stroke='%23d8574b' stroke-width='2'/%3E%3Cpath d='M7 17h18M7 21h12' stroke='%23b9d3ea' stroke-width='2'/%3E%3C/svg%3E" />
 	</head>
 	<body>
-		<div class="container">
-			<a href="/" class="back-button">← Computação</a>
+		<div class="gaveta">
+			<a href="/" class="voltar">← Ir para Computação</a>
 
-			<h1>Calcular Nota AP2</h1>
-			<h2>Biblioteconomia - digite suas notas:</h2>
-			<form id="notaForm">
-				<label for="carga">Carga horária da disciplina:</label>
-				<select id="carga">
-					<option value="60">60h (N1 e N2)</option>
-					<option value="30">30h (só N1 ou só N2)</option>
-				</select>
-				<p class="hint" id="hintCarga"></p>
-
-				<div id="campos60">
-					<label for="ad1">Nota da AD1:</label>
-					<input type="text" id="ad1" name="ad1" placeholder="Ex: 7,5 ou 7.5" inputmode="decimal" />
-
-					<label for="ap1">Nota da AP1:</label>
-					<input type="text" id="ap1" name="ap1" placeholder="Ex: 8,0 ou 8.0" inputmode="decimal" />
-
-					<label for="ad2">Nota da AD2:</label>
-					<input type="text" id="ad2" name="ad2" placeholder="Ex: 6,5 ou 6.5" inputmode="decimal" />
+			<header class="etiqueta">
+				<div class="etiqueta-papel">
+					<p>CEDERJ · Vou passar?</p>
+					<h1>Biblioteconomia</h1>
 				</div>
+			</header>
+			<span class="puxador" aria-hidden="true"></span>
 
-				<div id="campos30" class="hidden">
-					<label for="ad">Nota da AD:</label>
-					<input type="text" id="ad" name="ad" placeholder="Ex: 7,5 ou 7.5" inputmode="decimal" />
-				</div>
+			<div class="fichario">
+				<nav class="abas" aria-label="Calculadoras">
+					<a href="/biblioteconomia.html" class="aba" aria-current="page">AP2</a>
+					<a href="/biblioteconomia-ap3.html" class="aba">AP3</a>
+				</nav>
 
-				<button type="submit" id="botaoCalcular">Calcular AP2</button>
-			</form>
+				<main class="ficha">
+					<div class="cabecalho">
+						<span class="chamada" aria-hidden="true">020
+C389v
+AP2</span>
+						<div class="cabecalho-texto">
+							<h2>Calcular nota da AP2</h2>
+							<p>Quanto falta para fechar média 6.</p>
+						</div>
+					</div>
 
-			<p id="result" class="result"></p>
+					<form id="notaForm">
+						<fieldset>
+							<legend>Carga horária da disciplina</legend>
+							<div class="opcoes">
+								<label class="opcao"><input type="radio" name="carga" id="carga60" value="60" checked /> 60h</label>
+								<label class="opcao"><input type="radio" name="carga" id="carga30" value="30" /> 30h</label>
+							</div>
+							<p class="nota-rodape" id="hintCarga"></p>
+						</fieldset>
 
-			<div class="cta-box">
-				<p class="cta-text">
-					Não teve jeito?<br />
-					Faça aqui o cálculo da AP3
-				</p>
-				<a href="/biblioteconomia-ap3.html">
-					<button type="button" class="secondary">Calcular AP3</button>
-				</a>
+						<div class="campos" id="campos60">
+								<div class="campo">
+									<label for="ad1">AD1</label>
+									<input type="text" id="ad1" name="ad1" placeholder="7,5" inputmode="decimal" autocomplete="off" />
+								</div>
+								<div class="campo">
+									<label for="ap1">AP1</label>
+									<input type="text" id="ap1" name="ap1" placeholder="8,0" inputmode="decimal" autocomplete="off" />
+								</div>
+								<div class="campo">
+									<label for="ad2">AD2</label>
+									<input type="text" id="ad2" name="ad2" placeholder="6,5" inputmode="decimal" autocomplete="off" />
+								</div>
+						</div>
+
+						<div class="campos hidden" id="campos30">
+								<div class="campo">
+									<label for="ad">AD</label>
+									<input type="text" id="ad" name="ad" placeholder="7,5" inputmode="decimal" autocomplete="off" />
+								</div>
+						</div>
+
+						<button type="submit" class="botao" id="botaoCalcular">Calcular AP2</button>
+					</form>
+
+					<div id="result" class="resultado hidden" role="status" aria-live="polite">
+						<span class="carimbo">
+							<span class="carimbo-texto"></span>
+							<span class="carimbo-data"></span>
+						</span>
+						<p class="detalhe"><span class="detalhe-leitura"></span><span class="detalhe-digitado" aria-hidden="true"></span></p>
+					</div>
+
+					<p class="pistas">1. Biblioteconomia. 2. Avaliação (AD×4 + AP×6)/10. I. CEDERJ. II. Título: Vou passar?</p>
+				</main>
 			</div>
 		</div>
 
+		<footer class="emprestimo">
+			<div class="cartao">
+				<p class="cartao-titulo">Feito por Beatriz Costa, especialmente, pra</p>
+				<div class="cartao-colunas" aria-hidden="true">
+					<span>Data</span>
+					<span>Leitora</span>
+				</div>
+				<div class="cartao-linha">
+					<span class="cartao-data">15 AGO 2025</span>
+					<span class="assinatura">Brenda Alves</span>
+				</div>
+				<div class="cartao-linha" aria-hidden="true"></div>
+			</div>
+			<div class="bolso">
+				<p class="bolso-titulo">Biblioteca · CEDERJ</p>
+				<div class="contatos">
+					<a href="mailto:devbcdc@proton.me" target="_blank">e-mail</a>
+					<a href="https://www.github.com/brawlingthebits" target="_blank">GitHub</a>
+					<a href="https://www.linkedin.com/in/dev-bcdc/" target="_blank">LinkedIn</a>
+				</div>
+			</div>
+		</footer>
+
+		<script src="/static/biblioteconomia.js"></script>
 		<script>
-			// Easter egg no console
-			console.log('%c[BIBLIO] Catalogando curiosos no console... CDD 004.6', 'color: #ff66c4; font-family: monospace;');
-			console.log('%c-- Site reformulado numa sexta-feira depois de muito chá de hibisco', 'color: #888888; font-style: italic; font-family: monospace;');
+			ligarCargaHoraria({
+			    '60': 'AD1, AP1, AD2 e AP2. No SCA: regra #19.',
+			    '30': 'Só AD1 e AP1, ou só AD2 e AP2. No SCA: regra #37 ou #38.'
+			});
 
-			// Função auxiliar para normalizar entrada (aceita vírgula e ponto)
-			function parseNota(valor) {
-			    return parseFloat(valor.replace(',', '.'));
-			}
+			document.querySelectorAll('input[name="carga"]').forEach(function (radio) {
+			    radio.addEventListener('change', function () {
+			        document.getElementById('botaoCalcular').innerText = cargaHoraria() === '60' ? 'Calcular AP2' : 'Calcular AP';
+			    });
+			});
 
-			function notaValida(valor) {
-			    return !isNaN(valor) && valor >= 0 && valor <= 10;
-			}
-
-			function mostrar(texto, sucesso) {
-			    const resultElement = document.getElementById('result');
-			    resultElement.innerText = texto;
-			    resultElement.classList.toggle('success', !!sucesso);
-			    resultElement.classList.add('visible');
-			}
-
-			// Biblioteconomia: N = (ADx4 + APx6)/10
-			// 60h (regra #19): N = (N1 + N2)/2 >= 6
-			// 30h (regras #37 e #38): só uma AD e uma AP, N >= 6
-			const carga = document.getElementById('carga');
-
-			carga.onchange = function() {
-			    const is60 = carga.value === '60';
-			    document.getElementById('campos60').classList.toggle('hidden', !is60);
-			    document.getElementById('campos30').classList.toggle('hidden', is60);
-			    document.getElementById('botaoCalcular').innerText = is60 ? 'Calcular AP2' : 'Calcular AP';
-			    document.getElementById('hintCarga').innerText = is60
-			        ? 'AD1, AP1, AD2 e AP2. No SCA: regra #19.'
-			        : 'Só AD1 e AP1 ou só AD2 e AP2. No SCA: regra #37 ou #38.';
-			    document.getElementById('result').classList.remove('visible', 'success');
-			};
-			carga.onchange();
-
-			document.getElementById('notaForm').onsubmit = function(event) {
+			document.getElementById('notaForm').onsubmit = function (event) {
 			    event.preventDefault();
 
 			    let apNecessaria, nomeAP;
 
-			    if (carga.value === '60') {
-			        let ad1 = parseNota(document.getElementById('ad1').value);
-			        let ap1 = parseNota(document.getElementById('ap1').value);
-			        let ad2 = parseNota(document.getElementById('ad2').value);
+			    if (cargaHoraria() === '60') {
+			        const ad1 = parseNota(document.getElementById('ad1').value);
+			        const ap1 = parseNota(document.getElementById('ap1').value);
+			        const ad2 = parseNota(document.getElementById('ad2').value);
 
 			        if (![ad1, ap1, ad2].every(notaValida)) {
-			            mostrar('Preencha AD1, AP1 e AD2 com notas entre 0 e 10.');
+			            carimbar('Ficha incompleta', 'Preencha AD1, AP1 e AD2 com notas entre 0 e 10.');
 			            return;
 			        }
 
-			        let n1 = (ad1 * 4 + ap1 * 6) / 10;
-			        let n2Necessario = 12 - n1;
+			        const n1 = (ad1 * 4 + ap1 * 6) / 10;
+			        const n2Necessario = 12 - n1;
 			        apNecessaria = (n2Necessario * 10 - ad2 * 4) / 6;
 			        nomeAP = 'AP2';
 			    } else {
-			        let ad = parseNota(document.getElementById('ad').value);
+			        const ad = parseNota(document.getElementById('ad').value);
 
 			        if (!notaValida(ad)) {
-			            mostrar('Preencha a AD com uma nota entre 0 e 10.');
+			            carimbar('Ficha incompleta', 'Preencha a AD com uma nota entre 0 e 10.');
 			            return;
 			        }
 
@@ -475,28 +155,13 @@
 			    }
 
 			    if (apNecessaria <= 0) {
-			        mostrar(`Você já garantiu média 6! Qualquer nota na ${nomeAP} serve.`, true);
+			        carimbar('Média 6 garantida', `Qualquer nota na ${nomeAP} serve.`, true);
 			    } else if (apNecessaria > 10) {
-			        mostrar(`Nem com 10 na ${nomeAP} dá pra fechar média 6. Vai ter AP3, mas ainda dá pra passar!`);
+			        carimbar('Vai pra AP3', `Nem com 10 na ${nomeAP} dá pra fechar média 6, mas na AP3 ainda dá pra passar.`);
 			    } else {
-			        mostrar(`Você precisa tirar pelo menos ${apNecessaria.toFixed(2)} na ${nomeAP} para alcançar uma média final de 6.`);
+			        carimbar(`${nomeAP} ≥ ${fmt(apNecessaria)}`, `Você precisa tirar pelo menos ${fmt(apNecessaria)} na ${nomeAP} para fechar média 6.`, true);
 			    }
 			};
 		</script>
-
-		<footer class="footer">
-			<p class="footer-text">Feito por Beatriz Costa</p>
-			<div class="footer-icons">
-				<a href="mailto:devbcdc@proton.me" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-mail-48.png" alt="Email" class="footer-icon" />
-				</a>
-				<a href="https://www.github.com/brawlingthebits" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" />
-				</a>
-				<a href="https://www.linkedin.com/in/dev-bcdc/" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" />
-				</a>
-			</div>
-		</footer>
 	</body>
 </html>
