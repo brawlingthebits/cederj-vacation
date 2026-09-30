@@ -11,59 +11,98 @@
 		<script src="/static/computacao-ap3.js" defer></script>
 	</head>
 	<body>
-		<div class="fliperama">
-			<header class="letreiro">
-				<p class="letreiro-topo">CEDERJ · CALCULADORA DE NOTAS</p>
-				<h1>VOU PASSAR<span class="piscando">?</span></h1>
-				<p class="letreiro-sub"><span class="insira">INSIRA SUAS NOTAS</span></p>
-			</header>
+		<div class="estrelas" aria-hidden="true"></div>
 
-			<nav class="selecao" aria-label="Curso">
-				<p class="rotulo-pixel">Selecione o curso</p>
-				<div class="jogadores">
-					<a href="/" class="jogador pixel" aria-current="page"><span class="p">P1</span> Computação</a>
-					<a href="/biblioteconomia.html" class="jogador pixel"><span class="p">P2</span> Biblioteconomia</a>
+		<div class="salao">
+			<div class="gabinete">
+				<header class="marquise">
+					<div class="lampadas" aria-hidden="true"></div>
+					<p class="marquise-topo">CEDERJ · CALCULADORA DE NOTAS</p>
+					<h1 class="neon">VOU PASSAR<span class="piscando">?</span></h1>
+				</header>
+
+				<div class="corpo">
+					<div class="moldura">
+						<main class="crt" id="crt">
+							<div class="crt-conteudo">
+								<p class="insira">INSIRA SUAS NOTAS</p>
+
+								<nav class="selecao" aria-label="Curso">
+									<p class="rotulo-pixel">Selecione o curso</p>
+									<div class="jogadores">
+										<a href="/" class="jogador pixel" aria-current="page"><span class="p">P1</span> Computação</a>
+										<a href="/biblioteconomia.html" class="jogador pixel"><span class="p">P2</span> Biblioteconomia</a>
+									</div>
+								</nav>
+
+								<nav class="fases" aria-label="Calculadoras">
+									<a href="/" class="fase">FASE 1 · AP2</a>
+									<a href="/ap3.html" class="fase" aria-current="page">FASE 2 · AP3</a>
+								</nav>
+
+								<h2>Quanto preciso tirar na AP3?</h2>
+								<p class="missao">Última chance! Missão: fechar <strong>média final 5</strong>. Use N1 e N2 como aparecem no SCA.</p>
+
+								<form id="ap3Form" novalidate>
+									<div class="campos">
+								<div class="campo">
+									<label for="n1">N1</label>
+									<input type="text" id="n1" name="n1" placeholder="4,0" inputmode="decimal" autocomplete="off" maxlength="5" />
+								</div>
+								<div class="campo">
+									<label for="n2">N2</label>
+									<input type="text" id="n2" name="n2" placeholder="3,5" inputmode="decimal" autocomplete="off" maxlength="5" />
+								</div>
+									</div>
+								</form>
+
+								<section id="result" class="hud pixel" role="status" aria-live="polite" hidden>
+									<p class="hud-status"></p>
+									<div class="hud-placar" aria-hidden="true">
+										<span class="hud-rotulo"></span>
+										<span class="hud-numero"></span>
+									</div>
+									<div class="hud-energia" aria-hidden="true">
+										<div class="barra"></div>
+										<div class="barra-escala"><span>0</span><span>5</span><span>10</span></div>
+									</div>
+									<p class="hud-detalhe"></p>
+									<a class="hud-acao" href="/ap3.html" hidden></a>
+								</section>
+							</div>
+						</main>
+					</div>
+
+					<div class="painel">
+						<div class="joystick" id="joystick" aria-hidden="true">
+							<span class="joystick-base"></span>
+							<span class="joystick-eixo"><span class="joystick-bola"></span></span>
+						</div>
+						<div class="botoes">
+							<button type="reset" form="ap3Form" class="botao-arcade azul pequeno">
+								<span class="tampa" aria-hidden="true"></span>
+								LIMPAR
+							</button>
+							<button type="submit" form="ap3Form" class="botao-arcade vermelho" id="botaoCalcular">
+								<span class="tampa" aria-hidden="true"></span>
+								CALCULAR AP3
+							</button>
+						</div>
+					</div>
+
+					<div class="porta-fichas" aria-hidden="true">
+						<div class="fenda">
+							<span class="fenda-luz">INSIRA<br />FICHA</span>
+							<span class="fenda-abertura"></span>
+							<span class="ficha" id="ficha"></span>
+						</div>
+						<div class="fenda">
+							<span class="fenda-luz">1 FICHA<br />1 NOTA</span>
+							<span class="fenda-abertura"></span>
+						</div>
+					</div>
 				</div>
-			</nav>
-
-			<main class="tela pixel">
-				<nav class="fases" aria-label="Calculadoras">
-					<a href="/" class="fase">FASE 1 · AP2</a>
-					<a href="/ap3.html" class="fase" aria-current="page">FASE 2 · AP3</a>
-				</nav>
-
-				<h2>Quanto preciso tirar na AP3?</h2>
-				<p class="missao">Última chance! Missão: fechar <strong>média final 5</strong>. Use N1 e N2 como aparecem no SCA.</p>
-
-				<form id="ap3Form" novalidate>
-					<div class="campos">
-					<div class="campo">
-						<label for="n1">N1</label>
-						<input type="text" id="n1" name="n1" placeholder="4,0" inputmode="decimal" autocomplete="off" maxlength="5" />
-					</div>
-					<div class="campo">
-						<label for="n2">N2</label>
-						<input type="text" id="n2" name="n2" placeholder="3,5" inputmode="decimal" autocomplete="off" maxlength="5" />
-					</div>
-					</div>
-
-					<button type="submit" class="botao" id="botaoCalcular">CALCULAR AP3</button>
-				</form>
-
-				<section id="result" class="hud pixel" role="status" aria-live="polite" hidden>
-					<p class="hud-status"></p>
-					<div class="hud-placar" aria-hidden="true">
-						<span class="hud-rotulo"></span>
-						<span class="hud-numero"></span>
-					</div>
-					<div class="hud-energia" aria-hidden="true">
-						<div class="barra"></div>
-						<div class="barra-escala"><span>0</span><span>5</span><span>10</span></div>
-					</div>
-					<p class="hud-detalhe"></p>
-					<a class="hud-acao" href="/ap3.html" hidden></a>
-				</section>
-			</main>
+			</div>
 
 			<footer class="creditos pixel">
 				<p class="creditos-titulo">CRÉDITOS</p>

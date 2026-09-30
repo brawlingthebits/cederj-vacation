@@ -38,6 +38,45 @@ function contar(elemento, valor) {
     }, 35);
 }
 
+// Reinicia uma animação de CSS trocando a classe
+function reanimar(elemento, classe) {
+    if (!elemento) {
+        return;
+    }
+    elemento.classList.remove(classe);
+    void elemento.offsetWidth;
+    elemento.classList.add(classe);
+}
+
+const CORES_CONFETE = ['#ffcc00', '#ff66c4', '#6c5ce7', '#00ff88', '#3ee6ff'];
+
+// Estoura confete de pixels na tela
+function soltarConfete() {
+    if (semAnimacao) {
+        return;
+    }
+
+    const crt = document.getElementById('crt');
+    const hud = document.getElementById('result');
+    const origem = hud.offsetTop + 30 + 'px';
+
+    for (let i = 0; i < 28; i++) {
+        const confete = document.createElement('span');
+        const angulo = Math.random() * Math.PI * 2;
+        const distancia = 60 + Math.random() * 140;
+        confete.className = 'confete';
+        confete.style.setProperty('--y0', origem);
+        confete.style.setProperty('--x', Math.cos(angulo) * distancia + 'px');
+        confete.style.setProperty('--y', Math.sin(angulo) * distancia + 60 + 'px');
+        confete.style.setProperty('--r', Math.round(Math.random() * 720) + 'deg');
+        confete.style.setProperty('--cor', CORES_CONFETE[i % CORES_CONFETE.length]);
+        confete.addEventListener('animationend', function () {
+            confete.remove();
+        });
+        crt.appendChild(confete);
+    }
+}
+
 // Mostra o resultado no placar
 // tipo: 'ok' (verde), 'perigo' (vermelho) ou vazio (amarelo)
 function mostrarPlacar(opcoes) {
@@ -69,8 +108,19 @@ function mostrarPlacar(opcoes) {
     }
 
     hud.hidden = false;
-    void hud.offsetWidth; // reinicia a animação
-    hud.classList.add('aparecendo');
+    reanimar(hud, 'aparecendo');
+
+    // Uma ficha cai na porta de fichas e o joystick dá uma mexida
+    reanimar(document.getElementById('ficha'), 'caindo');
+    reanimar(document.getElementById('joystick'), 'mexe');
+
+    if (opcoes.tipo === 'perigo') {
+        reanimar(document.getElementById('crt'), 'tremendo');
+    } else if (opcoes.tipo === 'ok') {
+        soltarConfete();
+    }
+
+    hud.scrollIntoView({ block: 'nearest', behavior: semAnimacao ? 'auto' : 'smooth' });
 
     if (temNumero) {
         hud.querySelector('.hud-rotulo').innerText = opcoes.rotulo;
@@ -83,3 +133,9 @@ function mostrarPlacar(opcoes) {
         });
     }
 }
+
+// O botão LIMPAR apaga as notas e o placar
+document.querySelector('form').addEventListener('reset', function () {
+    document.getElementById('result').hidden = true;
+    document.querySelector('.barra').style.setProperty('--nivel', 0);
+});

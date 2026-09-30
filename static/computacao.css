@@ -1,4 +1,4 @@
-/* Tela de fliperama: letreiro neon, seleção de jogador, fases e placar */
+/* Máquina de fliperama desenhada em CSS: letreiro de neon, tela CRT, painel de controle e porta de fichas */
 
 /* Fontes hospedadas no próprio site (licenças em /static/fonts) */
 @font-face {
@@ -15,7 +15,7 @@
 
 :root {
     color-scheme: dark;
-    --fundo: #0f0c24;
+    --fundo: #0b0920;
     --tela: #1b1738;
     --tela-funda: #120f29;
     --amarelo: #ffcc00;
@@ -24,8 +24,15 @@
     --roxo-escuro: #4b3fb8;
     --verde: #00ff88;
     --vermelho: #ff4d6d;
+    --ciano: #3ee6ff;
     --texto: #f2efff;
     --apagado: #9d97c7;
+
+    /* Móvel do fliperama */
+    --gabinete: #1a1433;
+    --gabinete-claro: #2a2150;
+    --moldura: #07060f;
+    --metal: #3a3552;
 
     --fonte-pixel: 'Press Start 2P', ui-monospace, 'Courier New', monospace;
     --fonte-terminal: 'VT323', ui-monospace, 'Courier New', monospace;
@@ -43,8 +50,8 @@
 body {
     min-height: 100vh;
     background:
-        radial-gradient(ellipse at 50% -10%, rgba(255, 102, 196, 0.22), transparent 55%),
-        radial-gradient(ellipse at 50% 120%, rgba(108, 92, 231, 0.28), transparent 60%),
+        radial-gradient(ellipse at 50% 0%, rgba(255, 102, 196, 0.18), transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(108, 92, 231, 0.3), transparent 55%),
         var(--fundo);
     color: var(--texto);
     font-family: var(--fonte-terminal);
@@ -52,38 +59,809 @@ body {
     line-height: 1.3;
     padding-inline: 16px;
     padding-block: 28px 40px;
+    overflow-x: hidden;
+}
+
+/* Céu de estrelas do salão de jogos */
+.estrelas,
+.estrelas::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    pointer-events: none;
+}
+
+.estrelas {
+    box-shadow:
+        663px 308px rgba(242, 239, 255, 0.7),
+        808px 1333px rgba(242, 239, 255, 0.7),
+        98px 148px rgba(242, 239, 255, 0.7),
+        1097px 192px rgba(242, 239, 255, 0.7),
+        748px 1193px rgba(242, 239, 255, 0.7),
+        118px 1039px rgba(242, 239, 255, 0.7),
+        439px 76px rgba(242, 239, 255, 0.7),
+        176px 888px rgba(242, 239, 255, 0.7),
+        856px 143px rgba(242, 239, 255, 0.7),
+        492px 185px rgba(242, 239, 255, 0.7),
+        1128px 869px rgba(242, 239, 255, 0.7),
+        121px 1158px rgba(242, 239, 255, 0.7),
+        253px 457px rgba(242, 239, 255, 0.7),
+        1291px 1284px rgba(242, 239, 255, 0.7),
+        1193px 126px rgba(242, 239, 255, 0.7),
+        1181px 1199px rgba(242, 239, 255, 0.7),
+        812px 101px rgba(242, 239, 255, 0.7),
+        452px 95px rgba(242, 239, 255, 0.7),
+        1140px 272px rgba(242, 239, 255, 0.7),
+        593px 858px rgba(242, 239, 255, 0.7),
+        295px 1107px rgba(242, 239, 255, 0.7),
+        241px 1169px rgba(242, 239, 255, 0.7),
+        631px 1147px rgba(242, 239, 255, 0.7),
+        1396px 370px rgba(242, 239, 255, 0.7),
+        211px 1191px rgba(242, 239, 255, 0.7),
+        1169px 1308px rgba(242, 239, 255, 0.7),
+        384px 762px rgba(242, 239, 255, 0.7),
+        199px 1121px rgba(242, 239, 255, 0.7),
+        1458px 128px rgba(242, 239, 255, 0.7),
+        1155px 122px rgba(242, 239, 255, 0.7),
+        1267px 421px rgba(242, 239, 255, 0.7),
+        1016px 1393px rgba(242, 239, 255, 0.7),
+        1088px 875px rgba(242, 239, 255, 0.7),
+        1591px 643px rgba(242, 239, 255, 0.7),
+        953px 1199px rgba(242, 239, 255, 0.7),
+        928px 740px rgba(242, 239, 255, 0.7),
+        613px 508px rgba(242, 239, 255, 0.7),
+        368px 499px rgba(242, 239, 255, 0.7),
+        167px 1176px rgba(242, 239, 255, 0.7),
+        614px 1075px rgba(242, 239, 255, 0.7),
+        1013px 703px rgba(242, 239, 255, 0.7),
+        1493px 919px rgba(242, 239, 255, 0.7),
+        589px 1247px rgba(242, 239, 255, 0.7),
+        149px 241px rgba(242, 239, 255, 0.7),
+        1048px 856px rgba(242, 239, 255, 0.7),
+        337px 700px rgba(242, 239, 255, 0.7),
+        311px 1001px rgba(242, 239, 255, 0.7),
+        863px 80px rgba(242, 239, 255, 0.7),
+        1368px 158px rgba(242, 239, 255, 0.7),
+        1565px 1142px rgba(242, 239, 255, 0.7),
+        1173px 642px rgba(242, 239, 255, 0.7),
+        696px 717px rgba(242, 239, 255, 0.7),
+        1217px 1017px rgba(242, 239, 255, 0.7),
+        1187px 934px rgba(242, 239, 255, 0.7),
+        140px 191px rgba(242, 239, 255, 0.7),
+        552px 970px rgba(242, 239, 255, 0.7),
+        1427px 1360px rgba(242, 239, 255, 0.7),
+        133px 124px rgba(242, 239, 255, 0.7),
+        1497px 634px rgba(242, 239, 255, 0.7),
+        1325px 1183px rgba(242, 239, 255, 0.7),
+        1395px 912px rgba(242, 239, 255, 0.7),
+        582px 790px rgba(242, 239, 255, 0.7),
+        1369px 710px rgba(242, 239, 255, 0.7),
+        46px 945px rgba(242, 239, 255, 0.7),
+        727px 344px rgba(242, 239, 255, 0.7),
+        1251px 239px rgba(242, 239, 255, 0.7),
+        1011px 120px rgba(242, 239, 255, 0.7),
+        446px 588px rgba(242, 239, 255, 0.7),
+        264px 507px rgba(242, 239, 255, 0.7),
+        814px 800px rgba(242, 239, 255, 0.7);
+    animation: cintilar 3s steps(2) infinite;
+}
+
+.estrelas::after {
+    content: '';
+    box-shadow:
+        1016px 165px rgba(255, 204, 0, 0.8),
+        340px 919px rgba(255, 204, 0, 0.8),
+        822px 1125px rgba(255, 204, 0, 0.8),
+        569px 280px rgba(255, 204, 0, 0.8),
+        881px 1126px rgba(255, 204, 0, 0.8),
+        570px 850px rgba(255, 204, 0, 0.8),
+        734px 1398px rgba(255, 204, 0, 0.8),
+        779px 472px rgba(255, 204, 0, 0.8),
+        309px 169px rgba(255, 204, 0, 0.8),
+        360px 309px rgba(255, 204, 0, 0.8),
+        475px 1348px rgba(255, 204, 0, 0.8),
+        477px 24px rgba(255, 204, 0, 0.8),
+        993px 1206px rgba(255, 204, 0, 0.8),
+        373px 538px rgba(255, 204, 0, 0.8),
+        577px 8px rgba(255, 204, 0, 0.8),
+        298px 858px rgba(255, 204, 0, 0.8),
+        1094px 756px rgba(255, 204, 0, 0.8),
+        1248px 1159px rgba(255, 204, 0, 0.8),
+        652px 257px rgba(255, 204, 0, 0.8),
+        1414px 1055px rgba(255, 204, 0, 0.8),
+        1264px 1341px rgba(255, 204, 0, 0.8),
+        1384px 110px rgba(255, 204, 0, 0.8),
+        935px 1393px rgba(255, 204, 0, 0.8),
+        1145px 803px rgba(255, 204, 0, 0.8),
+        815px 817px rgba(255, 204, 0, 0.8),
+        807px 212px rgba(255, 204, 0, 0.8),
+        986px 1299px rgba(255, 204, 0, 0.8),
+        820px 127px rgba(255, 204, 0, 0.8),
+        390px 137px rgba(255, 204, 0, 0.8),
+        427px 902px rgba(255, 204, 0, 0.8),
+        332px 225px rgba(255, 204, 0, 0.8),
+        696px 1230px rgba(255, 204, 0, 0.8),
+        107px 209px rgba(255, 204, 0, 0.8),
+        0px 1160px rgba(255, 204, 0, 0.8),
+        309px 1098px rgba(255, 204, 0, 0.8),
+        207px 744px rgba(255, 204, 0, 0.8),
+        1256px 52px rgba(255, 204, 0, 0.8),
+        144px 425px rgba(255, 204, 0, 0.8),
+        1257px 770px rgba(255, 204, 0, 0.8),
+        304px 1299px rgba(255, 204, 0, 0.8);
+    animation: cintilar 2.2s steps(2) infinite reverse;
+}
+
+@keyframes cintilar {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+.salao {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+/* ================= Gabinete ================= */
+
+.gabinete {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+}
+
+/* Brilho de neon refletido no chão */
+.gabinete::after {
+    content: '';
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: -26px;
+    height: 30px;
+    background: radial-gradient(ellipse at center, rgba(255, 102, 196, 0.45), transparent 70%);
+    filter: blur(6px);
+    z-index: -1;
+}
+
+/* Letreiro de neon com lâmpadas */
+.marquise {
+    position: relative;
+    margin-inline: -10px;
+    padding: 26px 22px 22px;
+    text-align: center;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 40%),
+        linear-gradient(180deg, #221a45, #120e28);
+    border: 3px solid #000;
+    border-radius: 14px 14px 4px 4px;
+    box-shadow:
+        inset 0 0 0 3px var(--gabinete-claro),
+        inset 0 0 30px rgba(255, 102, 196, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+}
+
+/* Duas fileiras de lâmpadas acendendo alternadas: efeito de luz correndo */
+.lampadas {
+    position: absolute;
+    inset: 6px;
+    pointer-events: none;
+}
+
+.lampadas::before,
+.lampadas::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 11px;
+    background: radial-gradient(circle, #fff6c9 0 1.5px, var(--amarelo) 2.5px 3.5px, transparent 4.5px) 0 0 / 18px 18px;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#000 0 0) content-box exclude,
+        linear-gradient(#000 0 0);
+    filter: drop-shadow(0 0 4px var(--amarelo));
+    animation: lampadas 0.6s steps(1) infinite;
+}
+
+.lampadas::after {
+    background-image: radial-gradient(circle, #ffe0f3 0 1.5px, var(--rosa) 2.5px 3.5px, transparent 4.5px);
+    background-position: 9px 9px;
+    filter: drop-shadow(0 0 4px var(--rosa));
+    animation-delay: 0.3s;
+}
+
+@keyframes lampadas {
+    50% {
+        opacity: 0.15;
+    }
+}
+
+.marquise-topo {
+    position: relative;
+    font-family: var(--fonte-pixel);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--ciano);
+    text-shadow: 0 0 8px var(--ciano);
+}
+
+/* Título em neon, com falhas de lâmpada velha */
+.neon {
+    position: relative;
+    font-family: var(--fonte-pixel);
+    font-weight: 400;
+    font-size: clamp(1.05rem, 6.4vw, 2.1rem);
+    line-height: 1.25;
+    color: #ffe3f4;
+    text-shadow:
+        0 0 2px #fff,
+        0 0 8px var(--rosa),
+        0 0 18px var(--rosa),
+        0 0 36px var(--roxo),
+        4px 4px 0 var(--roxo);
+    animation: neon-falha 6s infinite;
+}
+
+.neon .piscando {
+    animation: neon-apaga 1.1s steps(1) infinite;
+}
+
+@keyframes neon-falha {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        filter: none;
+    }
+    20%, 24%, 55% {
+        opacity: 0.6;
+        filter: brightness(0.45);
+    }
+}
+
+@keyframes neon-apaga {
+    50% {
+        opacity: 0.12;
+    }
+}
+
+/* Corpo do gabinete com a arte lateral */
+.corpo {
+    position: relative;
+    padding: 18px 16px 0;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 8%, transparent 92%, rgba(0, 0, 0, 0.35)),
+        var(--gabinete);
+    border-inline: 3px solid #000;
+    box-shadow:
+        inset 3px 0 0 var(--rosa),
+        inset -3px 0 0 var(--rosa),
+        inset 7px 0 0 #000,
+        inset -7px 0 0 #000;
+}
+
+/* Faixas diagonais da arte lateral */
+.corpo::before,
+.corpo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: repeating-linear-gradient(45deg, var(--roxo) 0 6px, var(--amarelo) 6px 9px, transparent 9px 14px);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+/* Tela, painel e porta de fichas ficam na frente da arte lateral */
+.moldura,
+.painel,
+.porta-fichas {
+    position: relative;
+    z-index: 1;
+}
+
+.corpo::before {
+    left: 9px;
+}
+
+.corpo::after {
+    right: 9px;
+}
+
+/* Moldura da tela */
+.moldura {
+    padding: 14px;
+    background: linear-gradient(145deg, #1c1830, var(--moldura) 55%);
+    border-radius: 18px;
+    box-shadow:
+        inset 0 0 0 2px #000,
+        inset 0 2px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 3px #000;
+}
+
+/* ================= Tela CRT ================= */
+
+.crt {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px / 28px;
+    background:
+        radial-gradient(ellipse at 50% 40%, #1d1842, #0d0b22 75%);
+    box-shadow:
+        inset 0 0 50px rgba(0, 0, 0, 0.9),
+        inset 0 0 12px rgba(108, 92, 231, 0.35),
+        0 0 24px rgba(108, 92, 231, 0.25);
+}
+
+/* Scanlines e a faixa de varredura descendo pela tela */
+.crt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.05) 48%, rgba(255, 255, 255, 0.08) 50%, transparent 52%) 0 0 / 100% 300%,
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
+    animation: varredura 7s linear infinite;
+}
+
+@keyframes varredura {
+    from {
+        background-position: 0 -100%, 0 0;
+    }
+    to {
+        background-position: 0 200%, 0 0;
+    }
+}
+
+/* Reflexo do vidro curvo e vinheta */
+.crt::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+        radial-gradient(ellipse at 22% 12%, rgba(255, 255, 255, 0.13), transparent 35%),
+        radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.55));
+}
+
+.crt-conteudo {
+    position: relative;
+    z-index: 2;
+    padding: 20px 18px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation:
+        ligar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+        tremor 0.12s steps(2) infinite;
+}
+
+/* A TV liga: linha branca no meio que se abre */
+@keyframes ligar {
+    0% {
+        transform: scale(1, 0.004);
+        filter: brightness(4) saturate(0);
+        opacity: 0.2;
+    }
+    35% {
+        transform: scale(1, 0.004);
+        filter: brightness(4) saturate(0);
+        opacity: 1;
+    }
+    70% {
+        transform: scale(1, 1.04);
+        filter: brightness(1.6);
+    }
+    100% {
+        transform: none;
+        filter: none;
+        opacity: 1;
+    }
+}
+
+/* Leve tremor de imagem analógica */
+@keyframes tremor {
+    50% {
+        text-shadow: 0.6px 0 rgba(255, 77, 109, 0.35), -0.6px 0 rgba(62, 230, 255, 0.35);
+    }
+}
+
+.crt.tremendo {
+    animation: sacudir 0.45s steps(6);
+}
+
+@keyframes sacudir {
+    0%, 100% {
+        transform: none;
+    }
+    20% {
+        transform: translate(-6px, 2px);
+    }
+    40% {
+        transform: translate(5px, -3px);
+    }
+    60% {
+        transform: translate(-4px, 3px);
+    }
+    80% {
+        transform: translate(3px, -1px);
+    }
+}
+
+.insira {
+    font-family: var(--fonte-pixel);
+    font-size: 0.6rem;
+    text-align: center;
+    color: var(--amarelo);
+    letter-spacing: 0.15em;
+    animation: piscar 1.1s steps(1) infinite;
+}
+
+@keyframes piscar {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Confete de pixels quando você passa */
+.confete {
+    position: absolute;
+    z-index: 5;
+    top: var(--y0);
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    background: var(--cor);
+    pointer-events: none;
+    animation: estourar 1.1s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes estourar {
+    to {
+        transform: translate(var(--x), var(--y)) rotate(var(--r));
+        opacity: 0;
+    }
+}
+
+/* ================= Painel de controle ================= */
+
+.painel {
+    position: relative;
+    margin: 18px -26px 0;
+    padding: 18px 34px 22px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 30%),
+        linear-gradient(180deg, var(--gabinete-claro), #1b1540);
+    clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%);
+    border-bottom: 6px solid #000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+/* Faixa de neon na borda do painel */
+.painel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    right: 5%;
+    height: 3px;
+    background: var(--ciano);
+    box-shadow: 0 0 10px var(--ciano);
+}
+
+/* Joystick */
+.joystick {
+    position: relative;
+    width: 76px;
+    height: 88px;
+    flex: none;
+}
+
+.joystick-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 64px;
+    height: 22px;
+    margin-left: -32px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 35%, #4a4468, #0c0a18 70%);
+    box-shadow: 0 3px 0 #000, inset 0 -2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.joystick-eixo {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 10px;
+    height: 54px;
+    margin-left: -5px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #6f6a86, #e6e3f2 45%, #57526e);
+    transform-origin: 50% 100%;
+    transition: rotate 0.18s cubic-bezier(0.3, 1.8, 0.5, 1), scale 0.18s;
+    animation: joystick-ocioso 5s ease-in-out infinite;
+}
+
+.joystick-bola {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    margin-left: -18px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffd1ec 0 8%, var(--rosa) 35%, #a3226f 85%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes joystick-ocioso {
+    0%, 86%, 100% {
+        rotate: 0deg;
+    }
+    89% {
+        rotate: -14deg;
+    }
+    93% {
+        rotate: 12deg;
+    }
+    96% {
+        rotate: -5deg;
+    }
+}
+
+/* O joystick aponta para o campo que você está preenchendo */
+.gabinete:has(.campo:nth-child(1) input:focus) .joystick-eixo {
+    animation: none;
+    rotate: -20deg;
+}
+
+.gabinete:has(.campo:nth-child(2) input:focus) .joystick-eixo {
+    animation: none;
+    scale: 1 0.85;
+}
+
+.gabinete:has(.campo:nth-child(3) input:focus) .joystick-eixo,
+.gabinete:has(.campo:nth-child(2):last-child input:focus) .joystick-eixo {
+    animation: none;
+    scale: 1;
+    rotate: 20deg;
+}
+
+.joystick.mexe .joystick-eixo {
+    animation: joystick-mexe 0.4s ease-out;
+}
+
+@keyframes joystick-mexe {
+    30% {
+        rotate: 16deg;
+    }
+    60% {
+        rotate: -10deg;
+    }
+}
+
+/* Botões de fliperama */
+.botoes {
+    display: flex;
+    gap: 22px;
+    align-items: flex-end;
+}
+
+.botao-arcade {
+    --cor: var(--vermelho);
+    --cor-escura: #a3183a;
+    --cor-clara: #ffb3c2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--texto);
+    font-family: var(--fonte-pixel);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    padding: 4px;
 }
 
-/* Scanlines do monitor CRT */
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px);
-    pointer-events: none;
-    z-index: 1000;
+.botao-arcade.azul {
+    --cor: var(--ciano);
+    --cor-escura: #127f95;
+    --cor-clara: #c9f7ff;
 }
 
-/* Vinheta nas bordas da tela */
-body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45));
-    pointer-events: none;
-    z-index: 999;
+.botao-arcade.amarelo {
+    --cor: var(--amarelo);
+    --cor-escura: #a07c00;
+    --cor-clara: #fff1b8;
 }
 
-.fliperama {
-    width: 100%;
-    max-width: 540px;
+/* Anel preto + tampa colorida com altura */
+.tampa {
+    display: block;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 32%, var(--cor-clara) 0 10%, var(--cor) 45%, var(--cor-escura) 100%);
+    box-shadow:
+        0 7px 0 var(--cor-escura),
+        0 7px 0 4px #000,
+        0 0 0 4px #000,
+        0 12px 14px rgba(0, 0, 0, 0.6);
+    transition: transform 0.06s, box-shadow 0.06s;
+}
+
+.botao-arcade.pequeno .tampa {
+    width: 44px;
+    height: 44px;
+}
+
+.botao-arcade:hover .tampa {
+    filter: brightness(1.15);
+}
+
+.botao-arcade:active .tampa {
+    transform: translateY(6px);
+    box-shadow:
+        0 1px 0 var(--cor-escura),
+        0 1px 0 4px #000,
+        0 0 0 4px #000,
+        0 4px 6px rgba(0, 0, 0, 0.6),
+        0 0 22px var(--cor);
+}
+
+.botao-arcade:disabled {
+    cursor: progress;
+    opacity: 0.7;
+}
+
+.botao-arcade:focus-visible {
+    outline: 3px dashed var(--amarelo);
+    outline-offset: 4px;
+}
+
+/* Com todas as notas preenchidas, o botão de calcular acende */
+.gabinete:not(:has(.campo input:placeholder-shown)) .botao-arcade.vermelho .tampa {
+    animation: pronto 1s ease-in-out infinite;
+}
+
+@keyframes pronto {
+    50% {
+        box-shadow:
+            0 7px 0 var(--cor-escura),
+            0 7px 0 4px #000,
+            0 0 0 4px #000,
+            0 12px 14px rgba(0, 0, 0, 0.6),
+            0 0 26px 6px var(--cor);
+    }
+}
+
+/* ================= Porta de fichas ================= */
+
+.porta-fichas {
+    position: relative;
+    margin-inline: -16px;
+    padding: 22px 20px 26px;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 20%),
+        var(--gabinete);
+    border: 3px solid #000;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+}
+
+.fenda {
+    position: relative;
+    width: 96px;
+    padding: 10px 8px 12px;
+    background: linear-gradient(180deg, #4a4566, var(--metal) 40%, #25213a);
+    border: 2px solid #000;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    align-items: center;
+    gap: 8px;
 }
+
+.fenda-luz {
+    font-family: var(--fonte-pixel);
+    font-size: 0.42rem;
+    line-height: 1.5;
+    text-align: center;
+    color: #ffd0d8;
+    background: #6d0f24;
+    padding: 4px 6px;
+    border-radius: 2px;
+    text-shadow: 0 0 6px var(--vermelho);
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.6), inset 0 0 6px rgba(255, 77, 109, 0.8);
+    animation: fenda-pisca 1.6s steps(1) infinite;
+}
+
+.fenda + .fenda .fenda-luz {
+    animation-delay: 0.8s;
+}
+
+@keyframes fenda-pisca {
+    50% {
+        filter: brightness(0.55);
+    }
+}
+
+.fenda-abertura {
+    width: 8px;
+    height: 26px;
+    border-radius: 4px;
+    background: #000;
+    box-shadow: inset 0 0 4px rgba(255, 77, 109, 0.9), 0 0 0 2px #1a1726;
+}
+
+/* A ficha que cai quando você calcula */
+.ficha {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #fff3b0 0 12%, var(--amarelo) 45%, #a07c00 100%);
+    box-shadow: inset 0 0 0 3px rgba(160, 124, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ficha.caindo {
+    animation: ficha-cai 0.9s cubic-bezier(0.5, 0, 0.8, 0.6);
+}
+
+@keyframes ficha-cai {
+    0% {
+        opacity: 1;
+        transform: translateY(-70px) rotateY(0deg);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-4px) rotateY(540deg) scaleX(1);
+    }
+    75% {
+        opacity: 1;
+        transform: translateY(0) rotateY(630deg) scaleX(0.3);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(14px) rotateY(720deg) scaleX(0.1);
+    }
+}
+
+/* ================= Conteúdo da tela ================= */
 
 .pixel {
     background: var(--tela);
@@ -94,53 +872,6 @@ body::after {
         var(--px) 0 0 0 var(--borda, var(--amarelo)),
         0 calc(var(--px) * 3) 0 0 rgba(0, 0, 0, 0.45);
     margin: var(--px);
-}
-
-/* Letreiro */
-.letreiro {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-block: 8px 4px;
-}
-
-.letreiro-topo {
-    font-family: var(--fonte-pixel);
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: var(--rosa);
-}
-
-.letreiro h1 {
-    font-family: var(--fonte-pixel);
-    font-weight: 400;
-    font-size: clamp(1.5rem, 7.5vw, 2.4rem);
-    line-height: 1.2;
-    color: var(--amarelo);
-    text-shadow:
-        4px 4px 0 var(--rosa),
-        0 0 18px rgba(255, 204, 0, 0.45);
-}
-
-.letreiro h1 .piscando {
-    animation: piscar 1.1s steps(1) infinite;
-}
-
-.letreiro-sub {
-    font-size: 1.3rem;
-    color: var(--apagado);
-}
-
-.insira {
-    color: var(--texto);
-    animation: piscar 1.1s steps(1) infinite;
-}
-
-@keyframes piscar {
-    50% {
-        opacity: 0;
-    }
 }
 
 /* Seleção de jogador (curso) */
@@ -198,13 +929,6 @@ body::after {
     color: var(--texto);
 }
 
-/* Tela principal */
-.tela {
-    padding: 22px 20px 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
 
 .fases {
     display: flex;
@@ -238,7 +962,7 @@ body::after {
     --borda: var(--rosa);
 }
 
-.tela h2 {
+.crt h2 {
     font-family: var(--fonte-pixel);
     font-weight: 400;
     font-size: clamp(0.85rem, 3.6vw, 1.05rem);
@@ -314,43 +1038,8 @@ form {
         0 0 16px rgba(255, 204, 0, 0.35);
 }
 
-.botao {
-    align-self: stretch;
-    font-family: var(--fonte-pixel);
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    color: #fff;
-    background: var(--roxo);
-    border: none;
-    padding: 16px 20px 18px;
-    cursor: pointer;
-    box-shadow:
-        inset -4px -5px 0 0 var(--roxo-escuro),
-        inset 4px 4px 0 0 rgba(255, 255, 255, 0.25),
-        0 6px 0 0 #000;
-    margin-bottom: 6px;
-}
-
-.botao:hover {
-    background: #7d6ef0;
-}
-
-.botao:active {
-    transform: translateY(4px);
-    box-shadow:
-        inset -4px -5px 0 0 var(--roxo-escuro),
-        inset 4px 4px 0 0 rgba(255, 255, 255, 0.25),
-        0 2px 0 0 #000;
-}
-
-a:focus-visible,
-.botao:focus-visible {
-    outline: 3px dashed var(--amarelo);
-    outline-offset: 6px;
-}
 
 /* Seta em pixel art (a fonte pixelada não tem o ▶) */
-.botao::before,
 .hud-acao::before,
 .jogador[aria-current="page"]::before {
     content: '';
@@ -362,6 +1051,7 @@ a:focus-visible,
     clip-path: polygon(0 0, 30% 0, 30% 15%, 50% 15%, 50% 30%, 70% 30%, 70% 45%, 100% 45%, 100% 55%, 70% 55%, 70% 70%, 50% 70%, 50% 85%, 30% 85%, 30% 100%, 0 100%);
     vertical-align: -0.05em;
 }
+
 
 /* Placar com o resultado */
 .hud {
@@ -538,16 +1228,65 @@ a:focus-visible,
     display: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .letreiro h1 .piscando,
-    .insira,
-    .jogador[aria-current="page"]::before,
-    .hud.aparecendo {
-        animation: none;
+/* Telas estreitas: gabinete mais enxuto */
+@media (max-width: 480px) {
+    .marquise {
+        margin-inline: 0;
     }
 
-    .barra::before,
-    .icon-link {
-        transition: none;
+    .corpo {
+        padding: 12px 12px 0;
+    }
+
+    .moldura {
+        padding: 9px;
+        border-radius: 14px;
+    }
+
+    .crt-conteudo {
+        padding: 16px 12px 20px;
+        gap: 16px;
+    }
+
+    .painel {
+        margin-inline: -12px;
+        padding: 16px 26px 18px;
+        gap: 10px;
+    }
+
+    .joystick {
+        width: 60px;
+        height: 76px;
+    }
+
+    .botoes {
+        gap: 14px;
+    }
+
+    .tampa {
+        width: 50px;
+        height: 50px;
+    }
+
+    .botao-arcade.pequeno .tampa {
+        width: 38px;
+        height: 38px;
+    }
+
+    .fenda {
+        width: 84px;
+    }
+
+    .porta-fichas {
+        margin-inline: -12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
     }
 }
