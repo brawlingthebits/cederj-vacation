@@ -134,6 +134,21 @@ function mostrarPlacar(opcoes) {
     }
 }
 
+// Liga a TV uma vez ao abrir a página (só no computador; no celular a tela já aparece pronta)
+(function ligarTela() {
+    const conteudo = document.querySelector('.crt-conteudo');
+    if (!conteudo || semAnimacao || !window.matchMedia('(min-width: 601px)').matches) {
+        return;
+    }
+    conteudo.classList.add('ligando');
+    conteudo.addEventListener('animationend', function fim(event) {
+        if (event.animationName === 'ligar') {
+            conteudo.classList.remove('ligando');
+            conteudo.removeEventListener('animationend', fim);
+        }
+    });
+})();
+
 // O botão LIMPAR apaga as notas e o placar
 document.querySelector('form').addEventListener('reset', function () {
     document.getElementById('result').hidden = true;

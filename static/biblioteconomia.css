@@ -524,7 +524,7 @@ a:focus-visible {
 }
 
 .cartao {
-    width: 86%;
+    width: min(86%, 340px);
     background: var(--ficha);
     border-radius: 3px 3px 0 0;
     padding: 12px 16px 40px;
@@ -545,7 +545,7 @@ a:focus-visible {
 .cartao-colunas,
 .cartao-linha {
     display: grid;
-    grid-template-columns: 5.5em 1fr;
+    grid-template-columns: 5.5em minmax(0, 1fr);
     align-items: end;
     border-bottom: 1px solid var(--pauta);
 }
@@ -581,8 +581,10 @@ a:focus-visible {
 }
 
 .assinatura {
+    min-width: 0;
     font-family: var(--fonte-mao);
-    font-size: 1.05rem;
+    /* Diminui em telas estreitas para o nome caber inteiro no cartão */
+    font-size: clamp(0.8rem, 4.2vw, 1.05rem);
     line-height: 1.9;
     color: #1f3a8a;
     white-space: nowrap;

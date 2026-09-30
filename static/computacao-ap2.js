@@ -31,8 +31,11 @@ document.getElementById('notaForm').onsubmit = async function (event) {
         return;
     }
 
-    const botao = document.getElementById('botaoCalcular');
-    botao.disabled = true;
+    // Trava os dois botões de calcular (o do painel e o da tela no celular)
+    const botoes = document.querySelectorAll('button[type="submit"]');
+    botoes.forEach(function (botao) {
+        botao.disabled = true;
+    });
 
     try {
         const response = await fetch('/calculate', {
@@ -89,6 +92,8 @@ document.getElementById('notaForm').onsubmit = async function (event) {
             detalhe: 'Não deu pra falar com o servidor. Tente novamente.'
         });
     } finally {
-        botao.disabled = false;
+        botoes.forEach(function (botao) {
+            botao.disabled = false;
+        });
     }
 };

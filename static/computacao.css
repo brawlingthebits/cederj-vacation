@@ -253,10 +253,11 @@ body {
     overflow: hidden;
 }
 
-/* Duas fileiras de lâmpadas acendendo alternadas: efeito de luz correndo */
+/* Lâmpadas em volta do letreiro, alternando amarelo e rosa.
+   Feitas com borda pontilhada, que funciona em qualquer navegador. */
 .lampadas {
     position: absolute;
-    inset: 6px;
+    inset: 7px;
     pointer-events: none;
 }
 
@@ -265,30 +266,21 @@ body {
     content: '';
     position: absolute;
     inset: 0;
+    border: 6px dotted var(--amarelo);
     border-radius: 10px;
-    padding: 11px;
-    background: radial-gradient(circle, #fff6c9 0 1.5px, var(--amarelo) 2.5px 3.5px, transparent 4.5px) 0 0 / 18px 18px;
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-        linear-gradient(#000 0 0) content-box exclude,
-        linear-gradient(#000 0 0);
-    filter: drop-shadow(0 0 4px var(--amarelo));
+    filter: drop-shadow(0 0 3px var(--amarelo));
     animation: lampadas 0.6s steps(1) infinite;
 }
 
 .lampadas::after {
-    background-image: radial-gradient(circle, #ffe0f3 0 1.5px, var(--rosa) 2.5px 3.5px, transparent 4.5px);
-    background-position: 9px 9px;
-    filter: drop-shadow(0 0 4px var(--rosa));
+    border-color: var(--rosa);
+    filter: drop-shadow(0 0 3px var(--rosa));
     animation-delay: 0.3s;
 }
 
 @keyframes lampadas {
     50% {
-        opacity: 0.15;
+        opacity: 0;
     }
 }
 
@@ -450,6 +442,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    animation: tremor 0.12s steps(2) infinite;
+}
+
+/* A TV liga uma única vez: o JS põe esta classe ao abrir a página e tira quando termina,
+   para que mudar o tamanho da janela (ou a barra do navegador no celular) não repita o efeito */
+.crt-conteudo.ligando {
     animation:
         ligar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
         tremor 0.12s steps(2) infinite;
@@ -1006,7 +1004,8 @@ form {
 }
 
 .campo input {
-    width: 100%;
+    /* desconta a margem da borda de pixel */
+    width: calc(100% - 6px);
     font-family: var(--fonte-terminal);
     font-size: 2.1rem;
     line-height: 1;
@@ -1039,7 +1038,44 @@ form {
 }
 
 
+/* Botão de calcular dentro da tela: só no celular, onde o painel some */
+.botao {
+    display: none;
+    width: 100%;
+    font-family: var(--fonte-pixel);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: #fff;
+    background: var(--rosa);
+    border: none;
+    padding: 16px 18px 18px;
+    cursor: pointer;
+    box-shadow:
+        inset -4px -5px 0 0 #c2378e,
+        inset 4px 4px 0 0 rgba(255, 255, 255, 0.3),
+        0 6px 0 0 #000;
+    margin-bottom: 6px;
+}
+
+.botao:active {
+    transform: translateY(4px);
+    box-shadow:
+        inset -4px -5px 0 0 #c2378e,
+        inset 4px 4px 0 0 rgba(255, 255, 255, 0.3),
+        0 2px 0 0 #000;
+}
+
+.botao:disabled {
+    opacity: 0.7;
+}
+
+.botao:focus-visible {
+    outline: 3px dashed var(--amarelo);
+    outline-offset: 4px;
+}
+
 /* Seta em pixel art (a fonte pixelada não tem o ▶) */
+.botao::before,
 .hud-acao::before,
 .jogador[aria-current="page"]::before {
     content: '';
@@ -1228,57 +1264,77 @@ form {
     display: none !important;
 }
 
-/* Telas estreitas: gabinete mais enxuto */
-@media (max-width: 480px) {
-    .marquise {
-        margin-inline: 0;
+/* Celular: sem o móvel do fliperama. Fica o letreiro e a tela ocupando a largura toda,
+   com o botão de calcular logo abaixo dos campos. */
+@media (max-width: 600px) {
+    body {
+        padding-block: 16px 32px;
     }
 
-    .corpo {
-        padding: 12px 12px 0;
+    .salao {
+        gap: 24px;
     }
 
-    .moldura {
-        padding: 9px;
-        border-radius: 14px;
-    }
-
-    .crt-conteudo {
-        padding: 16px 12px 20px;
-        gap: 16px;
-    }
-
-    .painel {
-        margin-inline: -12px;
-        padding: 16px 26px 18px;
-        gap: 10px;
-    }
-
-    .joystick {
-        width: 60px;
-        height: 76px;
-    }
-
-    .botoes {
+    .gabinete {
+        filter: none;
         gap: 14px;
     }
 
-    .tampa {
-        width: 50px;
-        height: 50px;
-    }
-
-    .botao-arcade.pequeno .tampa {
-        width: 38px;
-        height: 38px;
-    }
-
-    .fenda {
-        width: 84px;
-    }
-
+    .gabinete::after,
+    .corpo::before,
+    .corpo::after,
+    .painel,
     .porta-fichas {
-        margin-inline: -12px;
+        display: none;
+    }
+
+    .marquise {
+        margin-inline: 0;
+        padding: 22px 16px 18px;
+        border-radius: 12px;
+    }
+
+    .marquise-topo {
+        font-size: 0.48rem;
+        letter-spacing: 0.12em;
+    }
+
+    .corpo,
+    .moldura {
+        padding: 0;
+        background: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .crt {
+        border-radius: 12px;
+        box-shadow:
+            inset 0 0 30px rgba(0, 0, 0, 0.8),
+            0 0 0 3px #000,
+            0 0 0 5px var(--rosa),
+            0 0 18px rgba(255, 102, 196, 0.35);
+    }
+
+    /* Sem o efeito de TV ligando: a tela aparece pronta */
+    .crt-conteudo {
+        padding: 18px 14px 22px;
+        gap: 16px;
+        animation: none;
+    }
+
+    .campos {
+        grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+        gap: 14px 12px;
+    }
+
+    .campo input {
+        font-size: 1.9rem;
+    }
+
+    .botao {
+        display: block;
     }
 }
 
