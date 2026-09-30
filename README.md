@@ -1,11 +1,24 @@
 
 # quero-ferias-cederj
 
-Este projeto é uma aplicação Flask simples que calcula a nota necessária na prova AP2 para que a média final do aluno seja no mínimo 6, com base nas notas de AD1, AP1 e AD2.
+Calculadora de notas do CEDERJ feita em Flask. Ela mostra quanto você precisa tirar na AP2 para fechar média 6 e, se não der, quanto precisa na AP3 para chegar a 5.
 
-### Calculadora de Biblioteconomia
+No ar em https://quero-ferias-cederj.fly.dev/
 
-O site abre na calculadora de Computação. O botão "Ir para Biblioteconomia" leva ao mesmo fluxo em duas telas, com a AD valendo 40% e a AP valendo 60%:
+## Cursos
+
+### Computação
+
+O site abre em Computação, onde a AD vale 20% e a AP vale 80%:
+
+- `/`: quanto você precisa tirar na AP2 para fechar média 6 (o cálculo roda no servidor, em `/calculate`).
+- `/ap3.html`: com N1 e N2 do SCA, se você já passou ou quanto precisa na AP3 para chegar a 5.
+
+Regra: N1 e N2 = (AD×2 + AP×8)/10; N = (N1 + N2)/2; se N ≥ 6, aprovado. Senão, NF = [MAIOR(N1, N2) + AP3]/2.
+
+### Biblioteconomia
+
+A seleção de curso leva a Biblioteconomia, onde a AD vale 40% e a AP vale 60%:
 
 - `/biblioteconomia.html`: quanto você precisa tirar na AP2 (ou na AP, em disciplinas de 30h) para fechar média 6.
 - `/biblioteconomia-ap3.html`: com N1 e N2 do SCA, se você já passou ou quanto precisa na AP3 para chegar a 5.
@@ -15,88 +28,53 @@ Nas duas telas você escolhe a carga horária da disciplina:
 - **60h (regra #19)**: N1 e N2 = (AD×4 + AP×6)/10; N = (N1 + N2)/2; se N ≥ 6, aprovado. Senão, NF = [MAIOR(N1, N2) + AP3]/2.
 - **30h (regras #37 e #38)**: só uma AD e uma AP; N = (AD×4 + AP×6)/10; NF = (N + AP3)/2.
 
-## Requisitos
+## Estrutura
 
-- Python 3.x
-- Flask
+- `app.py`: servidor Flask, API de cálculo e cabeçalhos de segurança.
+- `gunicorn.conf.py`: configuração do servidor de produção.
+- `*.html`: as quatro páginas.
+- `static/computacao.*` e `static/computacao-ap*.js`: visual de fliperama e scripts de Computação.
+- `static/biblioteconomia.*` e `static/biblioteconomia-ap*.js`: visual de fichário e scripts de Biblioteconomia.
+- `static/fonts/`: fontes hospedadas no próprio site, com as licenças.
+- `static/assets/`: ícones do rodapé.
 
-## Instalação
+## Rodando localmente
 
-1. Clone este repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/quero-ferias-cederj.git
-   ```
-   
-2. Navegue até o diretório do projeto:
-   ```bash
-   cd quero-ferias-cederj
-   ```
+Precisa de Python 3.10 ou mais novo.
 
-3. Crie um ambiente virtual (opcional, mas recomendado):
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # No Windows: venv\Scripts\activate
-   ```
+```bash
+python3 -m venv venv
+source venv/bin/activate  # No Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
 
-4. Instale as dependências:
-   ```bash
-   pip install flask
-   ```
----
+Acesse `http://localhost:8080`. O `python app.py` usa o servidor de desenvolvimento do Flask. Para rodar como em produção (não funciona no Windows):
 
-## Executando com `python app.py`
+```bash
+gunicorn --config gunicorn.conf.py app:app
+```
 
-Este método funciona diretamente se o seu script `app.py` contém a verificação `if __name__ == '__main__':` e chama `app.run(...)`. Para usar este método:
+## Deploy no Fly.io
 
-1. Certifique-se de que as dependências estão instaladas (especialmente o Flask).
-2. No terminal, na raiz do projeto, execute:
-   ```bash
-   python app.py
-   ```
-3. Acesse `http://localhost:8080` no navegador para ver a aplicação em funcionamento.
+O `fly.toml` fica fora do Git (está no `.gitignore`). Com o `flyctl` instalado e logado, na raiz do projeto:
 
----
+```bash
+flyctl deploy -a quero-ferias-cederj
+```
 
-## Executando com `flask run`
+O `Dockerfile` usa Python 3.13, roda com um usuário sem privilégios e sobe o site com o gunicorn na porta 8080.
 
-Essa abordagem usa as variáveis de ambiente para configurar e iniciar a aplicação. Siga os passos abaixo:
+## Segurança
 
-1. **Defina a variável de ambiente para o aplicativo Flask**:
+- **CSP estrita**: scripts, estilos e fontes só vêm do próprio site. Não há script nem estilo inline, e o site não pode ser aberto dentro de iframes.
+- **Outros cabeçalhos**: HSTS, `X-Content-Type-Options`, `Referrer-Policy: no-referrer`, `Permissions-Policy` e `Cross-Origin-Opener-Policy`/`Cross-Origin-Resource-Policy`. O cabeçalho `Server` não revela a versão.
+- **API**: aceita só JSON de até 1KB, com exatamente os campos esperados e números finitos entre 0 e 10 (texto, `true` e `NaN` são recusados). Erros voltam em JSON, sem detalhes internos, e as respostas não ficam em cache.
+- **Servidor**: gunicorn em vez do servidor de desenvolvimento do Flask, com limites de tamanho de requisição.
+- **Dependências**: fixadas em `requirements.txt` e checadas com `pip-audit`.
+- **Privacidade**: as fontes são servidas pelo próprio site, então nenhuma visita é repassada ao Google.
 
-   - **No Linux/Mac**:
-     ```bash
-     export FLASK_APP=app.py
-     export FLASK_ENV=development  # Opcional: ativa o modo de desenvolvimento com recarregamento automático.
-     ```
-   - **No Windows (cmd.exe)**:
-     ```cmd
-     set FLASK_APP=app.py
-     set FLASK_ENV=development
-     ```
-     **No Windows (PowerShell)**:
-     ```powershell
-     $env:FLASK_APP = "app.py"
-     $env:FLASK_ENV = "development"
-     ```
+## Créditos
 
-2. **Instale o Flask**, se ainda não o fez:
-   ```bash
-   pip install flask
-   ```
-
-3. **Execute o comando**:
-   ```bash
-   flask run --host=0.0.0.0 --port=8080
-   ```
-   - Os parâmetros `--host=0.0.0.0` e `--port=8080` são utilizados para replicar a configuração de `app.run(host='0.0.0.0', port=8080)` do script. Se você não especificá-los, o Flask usará os padrões (`127.0.0.1` e porta `5000`).
-
-4. **Abra o navegador** e acesse:
-   ```
-   http://localhost:8080
-   ```
-   ou, se estiver usando `127.0.0.1` e a porta 5000:
-   ```
-   http://127.0.0.1:5000
-   ```
-
----
+- Fontes: Press Start 2P, VT323, Courier Prime e Libre Caslon Display (SIL Open Font License); Special Elite e Homemade Apple (Apache License 2.0). As licenças estão em `static/fonts/`.
+- Ícones de e-mail, GitHub e LinkedIn: [Icons8](https://icons8.com).

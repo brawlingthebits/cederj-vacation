@@ -1,5 +1,10 @@
 # Usar a imagem base do Python
-FROM python:3.9-slim
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Definir o diretório de trabalho
 WORKDIR /app
@@ -8,8 +13,16 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-# Copiar todos os arquivos do projeto para o diretório de trabalho
-COPY . .
+# Copiar só o que o site precisa (o resto fica de fora pelo .dockerignore)
+COPY app.py gunicorn.conf.py ./
+COPY *.html ./
+COPY static ./static
 
-# Comando para executar a aplicação
-CMD ["python", "app.py"]
+# Rodar sem privilégios de root
+RUN useradd --create-home --uid 10001 app
+USER app
+
+EXPOSE 8080
+
+# Servidor de produção (o servidor do Flask é só para desenvolvimento)
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "app:app"]

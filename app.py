@@ -1,47 +1,81 @@
-from flask import Flask, request, jsonify, send_from_directory, abort
-import re
+import math
+
+from flask import Flask, jsonify, request, send_from_directory
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
 # Configurações de segurança
 app.config["MAX_CONTENT_LENGTH"] = 1024  # Limita payload a 1KB
-app.config["JSON_SORT_KEYS"] = False
+app.json.sort_keys = False
+
+# Páginas servidas pelo site. Só estes arquivos saem da raiz do projeto.
+PAGINAS = {
+    "/": "index.html",
+    "/ap3.html": "ap3.html",
+    "/biblioteconomia.html": "biblioteconomia.html",
+    "/biblioteconomia-ap3.html": "biblioteconomia-ap3.html",
+}
+
+# Tudo vem do próprio site; nada de script ou estilo inline nem de terceiros.
+CONTENT_SECURITY_POLICY = "; ".join(
+    [
+        "default-src 'none'",
+        "script-src 'self'",
+        "style-src 'self'",
+        "font-src 'self'",
+        "img-src 'self' data:",
+        "connect-src 'self'",
+        "base-uri 'none'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+    ]
+)
+
+SECURITY_HEADERS = {
+    "Content-Security-Policy": CONTENT_SECURITY_POLICY,
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": "same-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+}
 
 
 def validar_nota(nota, nome_campo):
-    """Validação paranoica de notas"""
-    try:
-        # Converte para float
-        nota_float = float(nota)
+    """Validação paranoica de notas: só números de verdade entre 0 e 10"""
+    # bool é subclasse de int em Python, então precisa ser barrado antes
+    if isinstance(nota, bool) or not isinstance(nota, (int, float)):
+        raise ValueError(f"{nome_campo} deve ser um número")
 
-        # Verifica se é um número válido (não NaN, não Infinity)
-        if not (nota_float == nota_float and abs(nota_float) != float("inf")):
-            raise ValueError(f"{nome_campo} inválida: não é um número válido")
+    nota_float = float(nota)
 
-        # Verifica range [0, 10]
-        if nota_float < 0 or nota_float > 10:
-            raise ValueError(f"{nome_campo} fora do range permitido (0-10)")
+    if not math.isfinite(nota_float):
+        raise ValueError(f"{nome_campo} inválida: não é um número válido")
 
-        # Arredonda para 2 casas decimais para evitar problemas de precisão
-        return round(nota_float, 2)
+    if nota_float < 0 or nota_float > 10:
+        raise ValueError(f"{nome_campo} fora do range permitido (0-10)")
 
-    except (ValueError, TypeError) as e:
-        raise ValueError(f"Erro ao validar {nome_campo}: {str(e)}")
+    # Arredonda para 2 casas decimais para evitar problemas de precisão
+    return round(nota_float, 2)
 
 
-def sanitizar_input(data, campos_esperados):
-    """Remove campos não esperados e valida estrutura"""
+def ler_notas(campos_esperados):
+    """Lê o JSON da requisição e exige exatamente os campos esperados"""
+    if not request.is_json:
+        raise ValueError("Content-Type deve ser application/json")
+
+    data = request.get_json(silent=True)
+
     if not isinstance(data, dict):
         raise ValueError("Dados devem ser um objeto JSON")
 
-    # Remove campos não esperados
-    dados_limpos = {k: v for k, v in data.items() if k in campos_esperados}
-
-    # Verifica se todos os campos esperados estão presentes
-    if set(dados_limpos.keys()) != set(campos_esperados):
+    if set(data.keys()) != set(campos_esperados):
         raise ValueError(f"Campos esperados: {', '.join(campos_esperados)}")
 
-    return dados_limpos
+    return {campo: validar_nota(data[campo], campo.upper()) for campo in campos_esperados}
 
 
 def calcular_nota_ap2(ad1, ap1, ad2):
@@ -83,95 +117,56 @@ def calcular_nota_ap3(ad1, ap1, ad2, ap2):
     }
 
 
-@app.route("/")
-def index():
-    return send_from_directory(".", "index.html")
+def servir_pagina():
+    return send_from_directory(".", PAGINAS[request.path])
 
 
-@app.route("/ap3.html")
-def ap3_page():
-    return send_from_directory(".", "ap3.html")
-
-
-@app.route("/biblioteconomia.html")
-def biblioteconomia_page():
-    return send_from_directory(".", "biblioteconomia.html")
-
-
-@app.route("/biblioteconomia-ap3.html")
-def biblioteconomia_ap3_page():
-    return send_from_directory(".", "biblioteconomia-ap3.html")
+for caminho in PAGINAS:
+    app.add_url_rule(caminho, endpoint=f"pagina:{caminho}", view_func=servir_pagina)
 
 
 @app.route("/calculate", methods=["POST"])
 def calculate():
     try:
-        # Verifica Content-Type
-        if not request.is_json:
-            abort(400, description="Content-Type deve ser application/json")
-
-        data = request.get_json()
-
-        # Sanitiza e valida estrutura
-        campos_esperados = ["ad1", "ap1", "ad2"]
-        dados_limpos = sanitizar_input(data, campos_esperados)
-
-        # Valida cada nota individualmente
-        ad1 = validar_nota(dados_limpos["ad1"], "AD1")
-        ap1 = validar_nota(dados_limpos["ap1"], "AP1")
-        ad2 = validar_nota(dados_limpos["ad2"], "AD2")
-
-        # Calcula nota
-        nota_ap2 = calcular_nota_ap2(ad1, ap1, ad2)
-
+        notas = ler_notas(["ad1", "ap1", "ad2"])
+        nota_ap2 = calcular_nota_ap2(**notas)
         return jsonify({"nota_ap2": round(nota_ap2, 2), "success": True})
-
     except ValueError as e:
         return jsonify({"error": str(e), "success": False}), 400
-    except Exception as e:
-        return jsonify({"error": "Erro interno do servidor", "success": False}), 500
 
 
 @app.route("/calculate-ap3", methods=["POST"])
 def calculate_ap3():
     try:
-        # Verifica Content-Type
-        if not request.is_json:
-            abort(400, description="Content-Type deve ser application/json")
-
-        data = request.get_json()
-
-        # Sanitiza e valida estrutura
-        campos_esperados = ["ad1", "ap1", "ad2", "ap2"]
-        dados_limpos = sanitizar_input(data, campos_esperados)
-
-        # Valida cada nota individualmente
-        ad1 = validar_nota(dados_limpos["ad1"], "AD1")
-        ap1 = validar_nota(dados_limpos["ap1"], "AP1")
-        ad2 = validar_nota(dados_limpos["ad2"], "AD2")
-        ap2 = validar_nota(dados_limpos["ap2"], "AP2")
-
-        # Calcula nota AP3
-        resultado = calcular_nota_ap3(ad1, ap1, ad2, ap2)
+        notas = ler_notas(["ad1", "ap1", "ad2", "ap2"])
+        resultado = calcular_nota_ap3(**notas)
         resultado["success"] = True
-
         return jsonify(resultado)
-
     except ValueError as e:
         return jsonify({"error": str(e), "success": False}), 400
-    except Exception as e:
-        return jsonify({"error": "Erro interno do servidor", "success": False}), 500
+
+
+# Erros HTTP (404, 405, 413...) sem página padrão nem detalhes internos
+@app.errorhandler(HTTPException)
+def erro_http(e):
+    return jsonify({"error": e.name, "success": False}), e.code
+
+
+@app.errorhandler(Exception)
+def erro_interno(e):
+    app.logger.exception("Erro não tratado")
+    return jsonify({"error": "Erro interno do servidor", "success": False}), 500
 
 
 # Headers de segurança
 @app.after_request
 def add_security_headers(response):
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "DENY"
-    response.headers["X-XSS-Protection"] = "1; mode=block"
-    response.headers["Strict-Transport-Security"] = (
-        "max-age=31536000; includeSubDomains"
-    )
+    response.headers.update(SECURITY_HEADERS)
+    # Não revela a versão do servidor
+    response.headers["Server"] = "cederj-vacation"
+    # Respostas da API nunca devem ficar em cache
+    if request.path.startswith("/calculate"):
+        response.headers["Cache-Control"] = "no-store"
     return response
 
 
