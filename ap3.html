@@ -1,417 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Calcular AP3 - CEDERJ</title>
-		<style>
-			        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-			* {
-			    margin: 0;
-			    padding: 0;
-			    box-sizing: border-box;
-			}
-
-			body {
-			    font-family: 'Press Start 2P', cursive;
-			    background-color: #1a1a1a;
-			    color: #fff;
-			    min-height: 100vh;
-			    display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center;
-			    padding: 15px;
-			    line-height: 1.6;
-			}
-
-			/* Animação de fade in */
-			@keyframes fadeIn {
-			    from {
-			        opacity: 0;
-			        transform: translateY(20px);
-			    }
-			    to {
-			        opacity: 1;
-			        transform: translateY(0);
-			    }
-			}
-
-			/* Efeito scanline sutil */
-			body::before {
-			    content: '';
-			    position: fixed;
-			    top: 0;
-			    left: 0;
-			    width: 100%;
-			    height: 100%;
-			    background: repeating-linear-gradient(
-			        0deg,
-			        rgba(0, 0, 0, 0.15),
-			        rgba(0, 0, 0, 0.15) 1px,
-			        transparent 1px,
-			        transparent 2px
-			    );
-			    pointer-events: none;
-			    z-index: 1000;
-			}
-
-			.container {
-			    background-color: #333;
-			    padding: 25px 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-bottom: 20px;
-			    animation: fadeIn 0.6s ease-out;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button {
-			    display: inline-block;
-			    margin-bottom: 20px;
-			    padding: 12px 20px;
-			    background-color: #2d2d2d;
-			    color: #ffcc00;
-			    text-decoration: none;
-			    border-radius: 8px;
-			    transition: all 0.3s ease;
-			    font-size: 0.65em;
-			    border: 2px solid #ffcc00;
-			}
-
-			.back-button:hover {
-			    background-color: #3d3d3d;
-			    transform: translateX(-5px);
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-			}
-
-			h1 {
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			    font-size: 1.2em;
-			    line-height: 1.4;
-			    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			h2 {
-			    color: #ff66c4;
-			    margin-bottom: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.5;
-			}
-
-			label {
-			    display: block;
-			    margin-bottom: 8px;
-			    color: #fff;
-			    text-align: left;
-			    font-size: 0.7em;
-			}
-
-			input {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.75em;
-			    transition: all 0.3s ease;
-			}
-
-			input:focus {
-			    outline: none;
-			    border-color: #6c5ce7;
-			    background-color: #3d3d3d;
-			    box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
-			}
-
-			input::placeholder {
-			    color: #888;
-			    font-size: 0.7em;
-			}
-
-			button {
-			    width: 100%;
-			    padding: 18px;
-			    background-color: #6c5ce7;
-			    color: white;
-			    border: none;
-			    border-radius: 8px;
-			    cursor: pointer;
-			    font-size: 0.8em;
-			    font-family: 'Press Start 2P', cursive;
-			    margin-top: 10px;
-			    transition: all 0.3s ease;
-			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-			}
-
-			button:hover {
-			    background-color: #5f4dd1;
-			    transform: translateY(-2px);
-			    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-			}
-
-			button:active {
-			    transform: translateY(0);
-			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-
-			.result {
-			    margin-top: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.6;
-			    color: #ffcc00;
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 8px;
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    border: 2px solid #ffcc00;
-			    white-space: pre-line;
-			    opacity: 0;
-			    visibility: hidden;
-			    transition: all 0.4s ease;
-			}
-
-			.result.visible {
-			    opacity: 1;
-			    visibility: visible;
-			    animation: fadeIn 0.4s ease-out;
-			}
-
-			.result.success {
-			    color: #00ff88;
-			    border-color: #00ff88;
-			    animation: fadeIn 0.4s ease-out, pulse 2s ease-in-out;
-			}
-
-			@keyframes pulse {
-			    0%, 100% {
-			        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    }
-			    50% {
-			        box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-			    }
-			}
-
-			.footer {
-			    background-color: #333;
-			    padding: 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-top: 20px;
-			    border: 2px solid #ffcc00;
-			    animation: fadeIn 1s ease-out;
-			}
-
-			.footer-text {
-			    font-size: 0.65em;
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			}
-
-			.footer-icons {
-			    display: flex;
-			    justify-content: center;
-			    gap: 20px;
-			}
-
-			.icon-link {
-			    display: inline-block;
-			    transition: transform 0.3s ease;
-			}
-
-			.footer-icon {
-			    width: 40px;
-			    height: 40px;
-			    transition: opacity 0.3s;
-			    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-			}
-
-			.icon-link:hover {
-			    transform: scale(1.1) translateY(-3px);
-			}
-
-			.footer-icon:hover {
-			    opacity: 0.8;
-			}
-
-			/* Tablet */
-			@media (min-width: 768px) {
-			    body {
-			        padding: 30px;
-			    }
-
-			    h1 {
-			        font-size: 1.5em;
-			    }
-
-			    h2 {
-			        font-size: 0.85em;
-			    }
-
-			    label {
-			        font-size: 0.75em;
-			    }
-
-			    input {
-			        font-size: 0.85em;
-			    }
-
-			    button {
-			        font-size: 0.9em;
-			    }
-
-			    .back-button {
-			        font-size: 0.75em;
-			    }
-
-			    .result {
-			        font-size: 0.85em;
-			    }
-
-			    .footer-text {
-			        font-size: 0.75em;
-			    }
-			}
-
-			/* Desktop */
-			@media (min-width: 1024px) {
-			    h1 {
-			        font-size: 1.6em;
-			    }
-
-			    h2 {
-			        font-size: 0.95em;
-			    }
-
-			    label {
-			        font-size: 0.8em;
-			    }
-
-			    input {
-			        font-size: 0.9em;
-			    }
-
-			    button {
-			        font-size: 1em;
-			    }
-
-			    .back-button {
-			        font-size: 0.8em;
-			    }
-
-			    .result {
-			        font-size: 0.9em;
-			    }
-			}
-		</style>
+		<meta name="description" content="Calculadora de AP3 do CEDERJ para Computação." />
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236c5ce7'/%3E%3Cg fill='%23ffcc00'%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='7' y='4' width='1' height='1'/%3E%3Crect x='8' y='4' width='1' height='1'/%3E%3Crect x='9' y='4' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='6' y='5' width='1' height='1'/%3E%3Crect x='9' y='5' width='1' height='1'/%3E%3Crect x='10' y='5' width='1' height='1'/%3E%3Crect x='9' y='6' width='1' height='1'/%3E%3Crect x='10' y='6' width='1' height='1'/%3E%3Crect x='8' y='7' width='1' height='1'/%3E%3Crect x='9' y='7' width='1' height='1'/%3E%3Crect x='7' y='8' width='1' height='1'/%3E%3Crect x='8' y='8' width='1' height='1'/%3E%3Crect x='7' y='9' width='1' height='1'/%3E%3Crect x='8' y='9' width='1' height='1'/%3E%3Crect x='7' y='11' width='1' height='1'/%3E%3Crect x='8' y='11' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E" />
+		<link rel="stylesheet" href="/static/computacao.css" />
+		<script src="/static/computacao.js" defer></script>
+		<script src="/static/computacao-ap3.js" defer></script>
 	</head>
 	<body>
-		<div class="container">
-			<a href="/" class="back-button">← Voltar para AP2</a>
+		<div class="fliperama">
+			<header class="letreiro">
+				<p class="letreiro-topo">CEDERJ · CALCULADORA DE NOTAS</p>
+				<h1>VOU PASSAR<span class="piscando">?</span></h1>
+				<p class="letreiro-sub"><span class="insira">INSIRA SUAS NOTAS</span></p>
+			</header>
 
-			<h1>Calcular Nota AP3</h1>
-			<h2>Computação - última chance! Média final: 5</h2>
+			<nav class="selecao" aria-label="Curso">
+				<p class="rotulo-pixel">Selecione o curso</p>
+				<div class="jogadores">
+					<a href="/" class="jogador pixel" aria-current="page"><span class="p">P1</span> Computação</a>
+					<a href="/biblioteconomia.html" class="jogador pixel"><span class="p">P2</span> Biblioteconomia</a>
+				</div>
+			</nav>
 
-			<form id="ap3Form">
-				<label for="n1">N1 (média de AD1 e AP1):</label>
-				<input type="text" id="n1" name="n1" placeholder="Ex: 7,5 ou 7.5" required />
+			<main class="tela pixel">
+				<nav class="fases" aria-label="Calculadoras">
+					<a href="/" class="fase">FASE 1 · AP2</a>
+					<a href="/ap3.html" class="fase" aria-current="page">FASE 2 · AP3</a>
+				</nav>
 
-				<label for="n2">N2 (média de AD2 e AP2):</label>
-				<input type="text" id="n2" name="n2" placeholder="Ex: 5,0 ou 5.0" required />
+				<h2>Quanto preciso tirar na AP3?</h2>
+				<p class="missao">Última chance! Missão: fechar <strong>média final 5</strong>. Use N1 e N2 como aparecem no SCA.</p>
 
-				<button type="submit">Calcular AP3</button>
-			</form>
+				<form id="ap3Form" novalidate>
+					<div class="campos">
+					<div class="campo">
+						<label for="n1">N1</label>
+						<input type="text" id="n1" name="n1" placeholder="4,0" inputmode="decimal" autocomplete="off" maxlength="5" />
+					</div>
+					<div class="campo">
+						<label for="n2">N2</label>
+						<input type="text" id="n2" name="n2" placeholder="3,5" inputmode="decimal" autocomplete="off" maxlength="5" />
+					</div>
+					</div>
 
-			<p id="resultAP3" class="result"></p>
+					<button type="submit" class="botao" id="botaoCalcular">CALCULAR AP3</button>
+				</form>
+
+				<section id="result" class="hud pixel" role="status" aria-live="polite" hidden>
+					<p class="hud-status"></p>
+					<div class="hud-placar" aria-hidden="true">
+						<span class="hud-rotulo"></span>
+						<span class="hud-numero"></span>
+					</div>
+					<div class="hud-energia" aria-hidden="true">
+						<div class="barra"></div>
+						<div class="barra-escala"><span>0</span><span>5</span><span>10</span></div>
+					</div>
+					<p class="hud-detalhe"></p>
+					<a class="hud-acao" href="/ap3.html" hidden></a>
+				</section>
+			</main>
+
+			<footer class="creditos pixel">
+				<p class="creditos-titulo">CRÉDITOS</p>
+				<p class="creditos-nome">Feito por <strong>Beatriz Costa</strong></p>
+				<ul class="links">
+					<li>
+						<a href="https://beatrizcosta.fly.dev/" target="_blank" rel="noopener noreferrer" class="icon-link" title="Site">
+							<img src="/static/assets/icons8-portfolio-100.png" alt="Site" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="mailto:devbcdc@proton.me" class="icon-link" title="E-mail">
+							<img src="/static/assets/icons8-mail-contact-100.png" alt="E-mail" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="https://www.github.com/brawlingthebits" target="_blank" rel="noopener noreferrer" class="icon-link" title="GitHub">
+							<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank" rel="noopener noreferrer" class="icon-link" title="LinkedIn">
+							<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+				</ul>
+			</footer>
 		</div>
-
-		<script>
-			// Easter egg no console - old school style AP3
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c╔═══════════════════════════════════════════════════════╗', 'color: #ff0000; font-family: monospace; font-weight: bold;');
-			console.log('%c║ >>> AP3 CALCULATOR - LAST CHANCE MODE ACTIVATED <<< ║', 'color: #ff0000; font-family: monospace; font-weight: bold;');
-			console.log('%c╚═══════════════════════════════════════════════════════╝', 'color: #ff0000; font-family: monospace; font-weight: bold;');
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c[ALERT] Por que está usando F12 no meu site?', 'color: #ffcc00; font-family: monospace;');
-			console.log('%c[QUERY] Quer me hackear?', 'color: #ff6b6b; font-family: monospace;');
-			console.log('%c-- Site reformulado numa sexta-feira depois de muito chá de hibisco', 'color: #888888; font-style: italic; font-family: monospace;');
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c[EOF]', 'color: #888888; font-family: monospace;');
-
-			document.getElementById('ap3Form').onsubmit = async function(event) {
-			    event.preventDefault();
-
-			    // Função auxiliar para normalizar entrada (aceita vírgula e ponto)
-			    function parseNota(valor) {
-			        return parseFloat(valor.replace(',', '.'));
-			    }
-
-			    let n1 = parseNota(document.getElementById('n1').value);
-			    let n2 = parseNota(document.getElementById('n2').value);
-			    let resultElement = document.getElementById('resultAP3');
-
-			    // Validação client-side
-			    if (isNaN(n1) || isNaN(n2)) {
-			        resultElement.innerText = 'Por favor, preencha todos os campos com números válidos.';
-			        resultElement.classList.remove('success');
-			        resultElement.classList.add('visible');
-			        return;
-			    }
-
-			    if (n1 < 0 || n1 > 10 || n2 < 0 || n2 > 10) {
-			        resultElement.innerText = 'As notas devem estar entre 0 e 10.';
-			        resultElement.classList.remove('success');
-			        resultElement.classList.add('visible');
-			        return;
-			    }
-
-			    // Calcular média atual
-			    let mediaAtual = (n1 + n2) / 2;
-
-			    // Se já passou (média >= 6, não precisa de AP3)
-			    if (mediaAtual >= 6) {
-			        resultElement.innerText = `*** PARABÉNS! VOCÊ JÁ PASSOU! ***\n\nMédia final: ${mediaAtual.toFixed(2)}\n\nNão precisa fazer a AP3!\nVocê pode relaxar e curtir as férias!`;
-			        resultElement.classList.add('success');
-			        resultElement.classList.add('visible');
-			        return;
-			    }
-
-			    // Calcular nota necessária na AP3 para média final 5
-			    // NF = [MAIOR(N1, N2) + AP3] / 2 >= 5
-			    // Logo: AP3 >= 10 - MAIOR(N1, N2)
-			    let maiorNota = Math.max(n1, n2);
-			    let ap3Necessario = 10 - maiorNota;
-
-			    resultElement.innerText = `Você precisa tirar pelo menos ${ap3Necessario.toFixed(2)} na AP3 para alcançar média final 5.\n\nSua média atual: ${mediaAtual.toFixed(2)}\nMaior nota (N1 ou N2): ${maiorNota.toFixed(2)}`;
-			    resultElement.classList.remove('success');
-			    resultElement.classList.add('visible');
-			}
-		</script>
-
-		<footer class="footer">
-			<p class="footer-text">Feito por Beatriz Costa</p>
-			<div class="footer-icons">
-				<a href="mailto:devbcdc@proton.me" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-mail-48.png" alt="Email" class="footer-icon" />
-				</a>
-				<a href="https://www.github.com/brawlingthebits" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" />
-				</a>
-				<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" />
-				</a>
-			</div>
-		</footer>
 	</body>
 </html>

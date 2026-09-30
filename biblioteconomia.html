@@ -4,9 +4,6 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Vou passar, CEDERJ? - Biblioteconomia</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Libre+Caslon+Display&family=Special+Elite&family=Homemade+Apple&display=swap" />
 		<link rel="stylesheet" href="/static/biblioteconomia.css" />
 		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='6' width='28' height='20' rx='2' fill='%23fdfcf7' stroke='%234a2e1c' stroke-width='2'/%3E%3Cpath d='M2 12h28' stroke='%23d8574b' stroke-width='2'/%3E%3Cpath d='M7 17h18M7 21h12' stroke='%23b9d3ea' stroke-width='2'/%3E%3C/svg%3E" />
 	</head>
@@ -103,65 +100,15 @@ AP2</span>
 			<div class="bolso">
 				<p class="bolso-titulo">Biblioteca · CEDERJ</p>
 				<div class="contatos">
-					<a href="mailto:devbcdc@proton.me" target="_blank">e-mail</a>
-					<a href="https://www.github.com/brawlingthebits" target="_blank">GitHub</a>
-					<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank">LinkedIn</a>
+					<a href="https://beatrizcosta.fly.dev/" target="_blank" rel="noopener noreferrer">site</a>
+					<a href="mailto:devbcdc@proton.me">e-mail</a>
+					<a href="https://www.github.com/brawlingthebits" target="_blank" rel="noopener noreferrer">GitHub</a>
+					<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 				</div>
 			</div>
 		</footer>
 
-		<script src="/static/biblioteconomia.js"></script>
-		<script>
-			ligarCargaHoraria({
-			    '60': 'AD1, AP1, AD2 e AP2. No SCA: regra #19.',
-			    '30': 'Só AD1 e AP1, ou só AD2 e AP2. No SCA: regra #37 ou #38.'
-			});
-
-			document.querySelectorAll('input[name="carga"]').forEach(function (radio) {
-			    radio.addEventListener('change', function () {
-			        document.getElementById('botaoCalcular').innerText = cargaHoraria() === '60' ? 'Calcular AP2' : 'Calcular AP';
-			    });
-			});
-
-			document.getElementById('notaForm').onsubmit = function (event) {
-			    event.preventDefault();
-
-			    let apNecessaria, nomeAP;
-
-			    if (cargaHoraria() === '60') {
-			        const ad1 = parseNota(document.getElementById('ad1').value);
-			        const ap1 = parseNota(document.getElementById('ap1').value);
-			        const ad2 = parseNota(document.getElementById('ad2').value);
-
-			        if (![ad1, ap1, ad2].every(notaValida)) {
-			            carimbar('Ficha incompleta', 'Preencha AD1, AP1 e AD2 com notas entre 0 e 10.');
-			            return;
-			        }
-
-			        const n1 = (ad1 * 4 + ap1 * 6) / 10;
-			        const n2Necessario = 12 - n1;
-			        apNecessaria = (n2Necessario * 10 - ad2 * 4) / 6;
-			        nomeAP = 'AP2';
-			    } else {
-			        const ad = parseNota(document.getElementById('ad').value);
-
-			        if (!notaValida(ad)) {
-			            carimbar('Ficha incompleta', 'Preencha a AD com uma nota entre 0 e 10.');
-			            return;
-			        }
-
-			        apNecessaria = (6 * 10 - ad * 4) / 6;
-			        nomeAP = 'AP';
-			    }
-
-			    if (apNecessaria <= 0) {
-			        carimbar('Média 6 garantida', `Qualquer nota na ${nomeAP} serve.`, true);
-			    } else if (apNecessaria > 10) {
-			        carimbar('Vai pra AP3', `Nem com 10 na ${nomeAP} dá pra fechar média 6, mas na AP3 ainda dá pra passar.`);
-			    } else {
-			        carimbar(`${nomeAP} ≥ ${fmt(apNecessaria)}`, `Você precisa tirar pelo menos ${fmt(apNecessaria)} na ${nomeAP} para fechar média 6.`, true);
-			    }
-			};
-		</script>
+		<script src="/static/biblioteconomia.js" defer></script>
+		<script src="/static/biblioteconomia-ap2.js" defer></script>
 	</body>
 </html>

@@ -1,4 +1,37 @@
 /* Gaveta de fichário: fichas catalográficas sobre madeira, abas divisórias e carimbo */
+/* Fontes hospedadas no próprio site (licenças em /static/fonts) */
+@font-face {
+    font-family: 'Courier Prime';
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/courier-prime-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/courier-prime-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Libre Caslon Display';
+    font-display: swap;
+    src: url('fonts/libre-caslon-display.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Special Elite';
+    font-display: swap;
+    src: url('fonts/special-elite.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Homemade Apple';
+    font-display: swap;
+    src: url('fonts/homemade-apple.woff2') format('woff2');
+}
+
 :root {
     color-scheme: light;
     --madeira: #4a2e1c;
@@ -12,6 +45,8 @@
     --tinta-suave: #5b6275;
     --carimbo: #b3261e;
     --carimbo-ok: #2c5aa0;
+    /* Textura de papel */
+    --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
     --fonte-titulo: 'Libre Caslon Display', 'Libre Caslon Text', Georgia, serif;
     --fonte-ficha: 'Courier Prime', 'Courier New', ui-monospace, monospace;
@@ -173,7 +208,7 @@ body {
     position: relative;
     background-color: var(--ficha);
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+        var(--grao),
         repeating-linear-gradient(180deg, transparent 0 31px, var(--pauta) 31px 32px);
     border-radius: 3px;
     padding: 18px 22px 56px;
@@ -211,7 +246,7 @@ body {
     margin-inline: -22px;
     padding: 0 22px 12px;
     border-bottom: 2px solid var(--margem);
-    background: var(--ficha);
+    background: var(--grao), var(--ficha);
 }
 
 .chamada {

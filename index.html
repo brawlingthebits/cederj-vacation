@@ -1,431 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Vou passar, CEDERJ?</title>
-		<style>
-			        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-			* {
-			    margin: 0;
-			    padding: 0;
-			    box-sizing: border-box;
-			}
-
-			body {
-			    font-family: 'Press Start 2P', cursive;
-			    background-color: #1a1a1a;
-			    color: #fff;
-			    min-height: 100vh;
-			    display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center;
-			    padding: 15px;
-			    line-height: 1.6;
-			}
-
-			/* Animação de fade in */
-			@keyframes fadeIn {
-			    from {
-			        opacity: 0;
-			        transform: translateY(20px);
-			    }
-			    to {
-			        opacity: 1;
-			        transform: translateY(0);
-			    }
-			}
-
-			/* Efeito scanline sutil */
-			body::before {
-			    content: '';
-			    position: fixed;
-			    top: 0;
-			    left: 0;
-			    width: 100%;
-			    height: 100%;
-			    background: repeating-linear-gradient(
-			        0deg,
-			        rgba(0, 0, 0, 0.15),
-			        rgba(0, 0, 0, 0.15) 1px,
-			        transparent 1px,
-			        transparent 2px
-			    );
-			    pointer-events: none;
-			    z-index: 1000;
-			}
-
-			.container {
-			    background-color: #333;
-			    padding: 25px 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-bottom: 20px;
-			    animation: fadeIn 0.6s ease-out;
-			    border: 2px solid #ffcc00;
-			}
-
-			h1 {
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			    font-size: 1.2em;
-			    line-height: 1.4;
-			    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-			}
-
-			h2 {
-			    color: #ff66c4;
-			    margin-bottom: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.5;
-			}
-
-			label {
-			    display: block;
-			    margin-bottom: 8px;
-			    color: #fff;
-			    text-align: left;
-			    font-size: 0.7em;
-			}
-
-			input {
-			    width: 100%;
-			    padding: 15px;
-			    margin-bottom: 20px;
-			    border: 2px solid #ffcc00;
-			    border-radius: 8px;
-			    background-color: #2d2d2d;
-			    color: #fff;
-			    font-family: 'Press Start 2P', cursive;
-			    font-size: 0.75em;
-			    transition: all 0.3s ease;
-			}
-
-			input:focus {
-			    outline: none;
-			    border-color: #ff66c4;
-			    background-color: #3d3d3d;
-			    box-shadow: 0 0 10px rgba(255, 102, 196, 0.3);
-			}
-
-			input::placeholder {
-			    color: #888;
-			    font-size: 0.7em;
-			}
-
-			button {
-			    width: 100%;
-			    padding: 18px;
-			    background-color: #ff66c4;
-			    color: white;
-			    border: none;
-			    border-radius: 8px;
-			    cursor: pointer;
-			    font-size: 0.8em;
-			    font-family: 'Press Start 2P', cursive;
-			    margin-top: 10px;
-			    transition: all 0.3s ease;
-			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-			}
-
-			button:hover {
-			    background-color: #ffcc00;
-			    transform: translateY(-2px);
-			    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-			}
-
-			button:active {
-			    transform: translateY(0);
-			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-			}
-
-			button.secondary {
-			    background-color: #6c5ce7;
-			}
-
-			button.secondary:hover {
-			    background-color: #5f4dd1;
-			}
-
-			.result {
-			    margin-top: 25px;
-			    font-size: 0.75em;
-			    line-height: 1.6;
-			    color: #ffcc00;
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 8px;
-			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-			    border: 2px solid #ffcc00;
-			    opacity: 0;
-			    visibility: hidden;
-			    transition: all 0.4s ease;
-			}
-
-			.result.visible {
-			    opacity: 1;
-			    visibility: visible;
-			    animation: fadeIn 0.4s ease-out;
-			}
-
-			.cta-box {
-			    background-color: #2d2d2d;
-			    padding: 20px;
-			    border-radius: 10px;
-			    margin-top: 25px;
-			    border: 2px dashed #ff66c4;
-			    animation: fadeIn 0.8s ease-out;
-			}
-
-			.cta-text {
-			    color: #ff66c4;
-			    font-size: 0.75em;
-			    margin-bottom: 15px;
-			    line-height: 1.8;
-			}
-
-			.footer {
-			    background-color: #333;
-			    padding: 20px;
-			    border-radius: 15px;
-			    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-			    width: 100%;
-			    max-width: 500px;
-			    text-align: center;
-			    margin-top: 20px;
-			    border: 2px solid #ffcc00;
-			    animation: fadeIn 1s ease-out;
-			}
-
-			.footer-text {
-			    font-size: 0.65em;
-			    color: #ffcc00;
-			    margin-bottom: 15px;
-			}
-
-			.footer-icons {
-			    display: flex;
-			    justify-content: center;
-			    gap: 20px;
-			}
-
-			.icon-link {
-			    display: inline-block;
-			    transition: transform 0.3s ease;
-			}
-
-			.footer-icon {
-			    width: 40px;
-			    height: 40px;
-			    transition: opacity 0.3s;
-			    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-			}
-
-			.icon-link:hover {
-			    transform: scale(1.1) translateY(-3px);
-			}
-
-			.footer-icon:hover {
-			    opacity: 0.8;
-			}
-
-			/* Tablet */
-			@media (min-width: 768px) {
-			    body {
-			        padding: 30px;
-			    }
-
-			    h1 {
-			        font-size: 1.5em;
-			    }
-
-			    h2 {
-			        font-size: 0.85em;
-			    }
-
-			    label {
-			        font-size: 0.75em;
-			    }
-
-			    input {
-			        font-size: 0.85em;
-			    }
-
-			    button {
-			        font-size: 0.9em;
-			    }
-
-			    .result {
-			        font-size: 0.85em;
-			    }
-
-			    .cta-text {
-			        font-size: 0.85em;
-			    }
-
-			    .footer-text {
-			        font-size: 0.75em;
-			    }
-			}
-
-			/* Desktop */
-			@media (min-width: 1024px) {
-			    h1 {
-			        font-size: 1.6em;
-			    }
-
-			    h2 {
-			        font-size: 0.95em;
-			    }
-
-			    label {
-			        font-size: 0.8em;
-			    }
-
-			    input {
-			        font-size: 0.9em;
-			    }
-
-			    button {
-			        font-size: 1em;
-			    }
-
-			    .result {
-			        font-size: 0.9em;
-			    }
-
-			    .cta-text {
-			        font-size: 0.9em;
-			    }
-			}
-		</style>
+		<meta name="description" content="Calculadora de AP2 e AP3 do CEDERJ para Computação." />
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236c5ce7'/%3E%3Cg fill='%23ffcc00'%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='7' y='4' width='1' height='1'/%3E%3Crect x='8' y='4' width='1' height='1'/%3E%3Crect x='9' y='4' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='6' y='5' width='1' height='1'/%3E%3Crect x='9' y='5' width='1' height='1'/%3E%3Crect x='10' y='5' width='1' height='1'/%3E%3Crect x='9' y='6' width='1' height='1'/%3E%3Crect x='10' y='6' width='1' height='1'/%3E%3Crect x='8' y='7' width='1' height='1'/%3E%3Crect x='9' y='7' width='1' height='1'/%3E%3Crect x='7' y='8' width='1' height='1'/%3E%3Crect x='8' y='8' width='1' height='1'/%3E%3Crect x='7' y='9' width='1' height='1'/%3E%3Crect x='8' y='9' width='1' height='1'/%3E%3Crect x='7' y='11' width='1' height='1'/%3E%3Crect x='8' y='11' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E" />
+		<link rel="stylesheet" href="/static/computacao.css" />
+		<script src="/static/computacao.js" defer></script>
+		<script src="/static/computacao-ap2.js" defer></script>
 	</head>
 	<body>
-		<div class="container">
-			<h1>Calcular Nota AP2</h1>
-			<h2>Computação - digite suas notas:</h2>
-			<form id="notaForm">
-				<label for="ad1">Nota da AD1:</label>
-				<input type="text" id="ad1" name="ad1" placeholder="Ex: 7,5 ou 7.5" required />
+		<div class="fliperama">
+			<header class="letreiro">
+				<p class="letreiro-topo">CEDERJ · CALCULADORA DE NOTAS</p>
+				<h1>VOU PASSAR<span class="piscando">?</span></h1>
+				<p class="letreiro-sub"><span class="insira">INSIRA SUAS NOTAS</span></p>
+			</header>
 
-				<label for="ap1">Nota da AP1:</label>
-				<input type="text" id="ap1" name="ap1" placeholder="Ex: 8,0 ou 8.0" required />
+			<nav class="selecao" aria-label="Curso">
+				<p class="rotulo-pixel">Selecione o curso</p>
+				<div class="jogadores">
+					<a href="/" class="jogador pixel" aria-current="page"><span class="p">P1</span> Computação</a>
+					<a href="/biblioteconomia.html" class="jogador pixel"><span class="p">P2</span> Biblioteconomia</a>
+				</div>
+			</nav>
 
-				<label for="ad2">Nota da AD2:</label>
-				<input type="text" id="ad2" name="ad2" placeholder="Ex: 6,5 ou 6.5" required />
+			<main class="tela pixel">
+				<nav class="fases" aria-label="Calculadoras">
+					<a href="/" class="fase" aria-current="page">FASE 1 · AP2</a>
+					<a href="/ap3.html" class="fase">FASE 2 · AP3</a>
+				</nav>
 
-				<button type="submit">Calcular AP2</button>
-			</form>
+				<h2>Quanto preciso tirar na AP2?</h2>
+				<p class="missao">Missão: fechar <strong>média 6</strong>. Aqui a AD vale 20% e a AP vale 80%.</p>
 
-			<p id="result" class="result"></p>
+				<form id="notaForm" novalidate>
+					<div class="campos">
+					<div class="campo">
+						<label for="ad1">AD1</label>
+						<input type="text" id="ad1" name="ad1" placeholder="7,5" inputmode="decimal" autocomplete="off" maxlength="5" />
+					</div>
+					<div class="campo">
+						<label for="ap1">AP1</label>
+						<input type="text" id="ap1" name="ap1" placeholder="8,0" inputmode="decimal" autocomplete="off" maxlength="5" />
+					</div>
+					<div class="campo">
+						<label for="ad2">AD2</label>
+						<input type="text" id="ad2" name="ad2" placeholder="6,5" inputmode="decimal" autocomplete="off" maxlength="5" />
+					</div>
+					</div>
 
-			<div class="cta-box">
-				<p class="cta-text">
-					Não teve jeito?<br />
-					Faça aqui o cálculo da AP3
-				</p>
-				<a href="/ap3.html">
-					<button type="button" class="secondary">Calcular AP3</button>
-				</a>
-			</div>
+					<button type="submit" class="botao" id="botaoCalcular">CALCULAR AP2</button>
+				</form>
 
-			<div class="cta-box">
-				<p class="cta-text">
-					Faz Biblioteconomia?<br />
-					Aqui a AD vale 40% e a AP vale 60%
-				</p>
-				<a href="/biblioteconomia.html">
-					<button type="button" class="secondary">Ir para Biblioteconomia</button>
-				</a>
-			</div>
+				<section id="result" class="hud pixel" role="status" aria-live="polite" hidden>
+					<p class="hud-status"></p>
+					<div class="hud-placar" aria-hidden="true">
+						<span class="hud-rotulo"></span>
+						<span class="hud-numero"></span>
+					</div>
+					<div class="hud-energia" aria-hidden="true">
+						<div class="barra"></div>
+						<div class="barra-escala"><span>0</span><span>5</span><span>10</span></div>
+					</div>
+					<p class="hud-detalhe"></p>
+					<a class="hud-acao" href="/ap3.html" hidden></a>
+				</section>
+			</main>
+
+			<footer class="creditos pixel">
+				<p class="creditos-titulo">CRÉDITOS</p>
+				<p class="creditos-nome">Feito por <strong>Beatriz Costa</strong></p>
+				<ul class="links">
+					<li>
+						<a href="https://beatrizcosta.fly.dev/" target="_blank" rel="noopener noreferrer" class="icon-link" title="Site">
+							<img src="/static/assets/icons8-portfolio-100.png" alt="Site" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="mailto:devbcdc@proton.me" class="icon-link" title="E-mail">
+							<img src="/static/assets/icons8-mail-contact-100.png" alt="E-mail" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="https://www.github.com/brawlingthebits" target="_blank" rel="noopener noreferrer" class="icon-link" title="GitHub">
+							<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+					<li>
+						<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank" rel="noopener noreferrer" class="icon-link" title="LinkedIn">
+							<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" width="48" height="48" />
+						</a>
+					</li>
+				</ul>
+			</footer>
 		</div>
-
-		<script>
-			// Easter egg no console - old school style
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c╔═══════════════════════════════════════════════════════╗', 'color: #00ff00; font-family: monospace;');
-			console.log('%c║   CEDERJ VACATION CALCULATOR v1.0                    ║', 'color: #00ff00; font-family: monospace;');
-			console.log('%c║   [Sistema de Cálculo de Notas Acadêmicas]          ║', 'color: #00ff00; font-family: monospace;');
-			console.log('%c╚═══════════════════════════════════════════════════════╝', 'color: #00ff00; font-family: monospace;');
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c> ALERT: Estudante curioso detectado!', 'color: #ff0000; font-family: monospace;');
-			console.log('%c> Analisando intenções...', 'color: #ffcc00; font-family: monospace;');
-			console.log('%c', 'font-size: 1px;');
-			console.log('%c[SCAN COMPLETE]', 'color: #00ff00; font-family: monospace;');
-			console.log('%cSe você está aqui, duas possibilidades:', 'color: #ffffff; font-family: monospace;');
-			console.log('%c  [1] Você é dev e tá checando o código (salve, colega!)', 'color: #00d2ff; font-family: monospace;');
-			console.log('%c  [2] Você tá tentando me hacker...', 'color: #ff6b6b; font-family: monospace;');
-			console.log('%c-- Site reformulado numa sexta-feira depois de muito chá de hibisco', 'color: #888888; font-style: italic; font-family: monospace;');
-			console.log('%c', 'font-size: 1px;');
-
-			document.getElementById('notaForm').onsubmit = async function(event) {
-			    event.preventDefault();
-
-			    // Função auxiliar para normalizar entrada (aceita vírgula e ponto)
-			    function parseNota(valor) {
-			        return parseFloat(valor.replace(',', '.'));
-			    }
-
-			    let ad1 = parseNota(document.getElementById('ad1').value);
-			    let ap1 = parseNota(document.getElementById('ap1').value);
-			    let ad2 = parseNota(document.getElementById('ad2').value);
-			    let resultElement = document.getElementById('result');
-
-			    // Validação client-side
-			    if (isNaN(ad1) || isNaN(ap1) || isNaN(ad2)) {
-			        resultElement.innerText = 'Por favor, preencha todos os campos com números válidos.';
-			        resultElement.classList.add('visible');
-			        return;
-			    }
-
-			    if (ad1 < 0 || ad1 > 10 || ap1 < 0 || ap1 > 10 || ad2 < 0 || ad2 > 10) {
-			        resultElement.innerText = 'As notas devem estar entre 0 e 10.';
-			        resultElement.classList.add('visible');
-			        return;
-			    }
-
-			    try {
-			        let response = await fetch('/calculate', {
-			            method: 'POST',
-			            headers: {
-			                'Content-Type': 'application/json'
-			            },
-			            body: JSON.stringify({ ad1, ap1, ad2 })
-			        });
-
-			        let result = await response.json();
-
-			        if (response.ok && result.success) {
-			            resultElement.innerText = `Você precisa tirar pelo menos ${result.nota_ap2.toFixed(2)} na AP2 para alcançar uma média final de 6.`;
-			        } else {
-			            resultElement.innerText = result.error || 'Erro ao calcular. Tente novamente.';
-			        }
-			    } catch (error) {
-			        resultElement.innerText = 'Erro de conexão. Tente novamente.';
-			    }
-
-			    resultElement.classList.add('visible');
-			}
-		</script>
-
-		<footer class="footer">
-			<p class="footer-text">Feito por Beatriz Costa</p>
-			<div class="footer-icons">
-				<a href="mailto:devbcdc@proton.me" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-mail-48.png" alt="Email" class="footer-icon" />
-				</a>
-				<a href="https://www.github.com/brawlingthebits" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-github-48.png" alt="GitHub" class="footer-icon" />
-				</a>
-				<a href="https://www.linkedin.com/in/dev-beatriz-costa/" target="_blank" class="icon-link">
-					<img src="/static/assets/icons8-linkedin-circundado-48.png" alt="LinkedIn" class="footer-icon" />
-				</a>
-			</div>
-		</footer>
 	</body>
 </html>
