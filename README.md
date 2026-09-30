@@ -33,7 +33,7 @@ Nas duas telas você escolhe a carga horária da disciplina:
 - `app.py`: servidor Flask, API de cálculo e cabeçalhos de segurança.
 - `gunicorn.conf.py`: configuração do servidor de produção.
 - `*.html`: as quatro páginas.
-- `static/computacao.*` e `static/computacao-ap*.js`: visual de fliperama e scripts de Computação.
+- `static/computacao.*` e `static/computacao-ap*.js`: visual retrô e scripts de Computação.
 - `static/biblioteconomia.*` e `static/biblioteconomia-ap*.js`: visual de fichário e scripts de Biblioteconomia.
 - `static/fonts/`: fontes hospedadas no próprio site, com as licenças.
 - `static/assets/`: ícones do rodapé.

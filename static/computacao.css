@@ -1,4 +1,4 @@
-/* Máquina de fliperama desenhada em CSS: letreiro de neon, tela CRT, painel de controle e porta de fichas */
+/* Visual retrô: letreiro de neon com lâmpadas, tela com scanlines e placar com barra de energia */
 
 /* Fontes hospedadas no próprio site (licenças em /static/fonts) */
 @font-face {
@@ -28,11 +28,7 @@
     --texto: #f2efff;
     --apagado: #9d97c7;
 
-    /* Móvel do fliperama */
-    --gabinete: #1a1433;
-    --gabinete-claro: #2a2150;
-    --moldura: #07060f;
-    --metal: #3a3552;
+    --letreiro-borda: #2a2150;
 
     --fonte-pixel: 'Press Start 2P', ui-monospace, 'Courier New', monospace;
     --fonte-terminal: 'VT323', ui-monospace, 'Courier New', monospace;
@@ -62,7 +58,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Céu de estrelas do salão de jogos */
+/* Céu de estrelas no fundo */
 .estrelas,
 .estrelas::after {
     position: fixed;
@@ -208,44 +204,21 @@ body {
     margin-inline: auto;
     display: flex;
     flex-direction: column;
-    gap: 36px;
-}
-
-/* ================= Gabinete ================= */
-
-.gabinete {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
-}
-
-/* Brilho de neon refletido no chão */
-.gabinete::after {
-    content: '';
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    bottom: -26px;
-    height: 30px;
-    background: radial-gradient(ellipse at center, rgba(255, 102, 196, 0.45), transparent 70%);
-    filter: blur(6px);
-    z-index: -1;
+    gap: 26px;
 }
 
 /* Letreiro de neon com lâmpadas */
 .marquise {
     position: relative;
-    margin-inline: -10px;
     padding: 26px 22px 22px;
     text-align: center;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 40%),
         linear-gradient(180deg, #221a45, #120e28);
     border: 3px solid #000;
-    border-radius: 14px 14px 4px 4px;
+    border-radius: 12px;
     box-shadow:
-        inset 0 0 0 3px var(--gabinete-claro),
+        inset 0 0 0 3px var(--letreiro-borda),
         inset 0 0 30px rgba(255, 102, 196, 0.25);
     display: flex;
     flex-direction: column;
@@ -331,73 +304,19 @@ body {
     }
 }
 
-/* Corpo do gabinete com a arte lateral */
-.corpo {
-    position: relative;
-    padding: 18px 16px 0;
-    background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 8%, transparent 92%, rgba(0, 0, 0, 0.35)),
-        var(--gabinete);
-    border-inline: 3px solid #000;
-    box-shadow:
-        inset 3px 0 0 var(--rosa),
-        inset -3px 0 0 var(--rosa),
-        inset 7px 0 0 #000,
-        inset -7px 0 0 #000;
-}
-
-/* Faixas diagonais da arte lateral */
-.corpo::before,
-.corpo::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 6px;
-    background: repeating-linear-gradient(45deg, var(--roxo) 0 6px, var(--amarelo) 6px 9px, transparent 9px 14px);
-    opacity: 0.6;
-    z-index: 0;
-}
-
-/* Tela, painel e porta de fichas ficam na frente da arte lateral */
-.moldura,
-.painel,
-.porta-fichas {
-    position: relative;
-    z-index: 1;
-}
-
-.corpo::before {
-    left: 9px;
-}
-
-.corpo::after {
-    right: 9px;
-}
-
-/* Moldura da tela */
-.moldura {
-    padding: 14px;
-    background: linear-gradient(145deg, #1c1830, var(--moldura) 55%);
-    border-radius: 18px;
-    box-shadow:
-        inset 0 0 0 2px #000,
-        inset 0 2px 0 rgba(255, 255, 255, 0.08),
-        0 0 0 3px #000;
-}
-
-/* ================= Tela CRT ================= */
+/* ================= Tela ================= */
 
 .crt {
     position: relative;
     overflow: hidden;
-    border-radius: 22px / 28px;
+    border-radius: 14px;
     background:
         radial-gradient(ellipse at 50% 40%, #1d1842, #0d0b22 75%);
     box-shadow:
-        inset 0 0 50px rgba(0, 0, 0, 0.9),
-        inset 0 0 12px rgba(108, 92, 231, 0.35),
-        0 0 24px rgba(108, 92, 231, 0.25);
+        inset 0 0 40px rgba(0, 0, 0, 0.85),
+        0 0 0 3px #000,
+        0 0 0 5px var(--rosa),
+        0 0 22px rgba(255, 102, 196, 0.35);
 }
 
 /* Scanlines e a faixa de varredura descendo pela tela */
@@ -438,49 +357,10 @@ body {
 .crt-conteudo {
     position: relative;
     z-index: 2;
-    padding: 20px 18px 24px;
+    padding: 22px 22px 26px;
     display: flex;
     flex-direction: column;
     gap: 18px;
-    animation: tremor 0.12s steps(2) infinite;
-}
-
-/* A TV liga uma única vez: o JS põe esta classe ao abrir a página e tira quando termina,
-   para que mudar o tamanho da janela (ou a barra do navegador no celular) não repita o efeito */
-.crt-conteudo.ligando {
-    animation:
-        ligar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
-        tremor 0.12s steps(2) infinite;
-}
-
-/* A TV liga: linha branca no meio que se abre */
-@keyframes ligar {
-    0% {
-        transform: scale(1, 0.004);
-        filter: brightness(4) saturate(0);
-        opacity: 0.2;
-    }
-    35% {
-        transform: scale(1, 0.004);
-        filter: brightness(4) saturate(0);
-        opacity: 1;
-    }
-    70% {
-        transform: scale(1, 1.04);
-        filter: brightness(1.6);
-    }
-    100% {
-        transform: none;
-        filter: none;
-        opacity: 1;
-    }
-}
-
-/* Leve tremor de imagem analógica */
-@keyframes tremor {
-    50% {
-        text-shadow: 0.6px 0 rgba(255, 77, 109, 0.35), -0.6px 0 rgba(62, 230, 255, 0.35);
-    }
 }
 
 .crt.tremendo {
@@ -537,325 +417,6 @@ body {
     to {
         transform: translate(var(--x), var(--y)) rotate(var(--r));
         opacity: 0;
-    }
-}
-
-/* ================= Painel de controle ================= */
-
-.painel {
-    position: relative;
-    margin: 18px -26px 0;
-    padding: 18px 34px 22px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 30%),
-        linear-gradient(180deg, var(--gabinete-claro), #1b1540);
-    clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%);
-    border-bottom: 6px solid #000;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-around;
-    gap: 20px;
-}
-
-/* Faixa de neon na borda do painel */
-.painel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 5%;
-    right: 5%;
-    height: 3px;
-    background: var(--ciano);
-    box-shadow: 0 0 10px var(--ciano);
-}
-
-/* Joystick */
-.joystick {
-    position: relative;
-    width: 76px;
-    height: 88px;
-    flex: none;
-}
-
-.joystick-base {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 64px;
-    height: 22px;
-    margin-left: -32px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at 50% 35%, #4a4468, #0c0a18 70%);
-    box-shadow: 0 3px 0 #000, inset 0 -2px 3px rgba(0, 0, 0, 0.6);
-}
-
-.joystick-eixo {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    width: 10px;
-    height: 54px;
-    margin-left: -5px;
-    border-radius: 5px;
-    background: linear-gradient(90deg, #6f6a86, #e6e3f2 45%, #57526e);
-    transform-origin: 50% 100%;
-    transition: rotate 0.18s cubic-bezier(0.3, 1.8, 0.5, 1), scale 0.18s;
-    animation: joystick-ocioso 5s ease-in-out infinite;
-}
-
-.joystick-bola {
-    position: absolute;
-    top: -24px;
-    left: 50%;
-    width: 36px;
-    height: 36px;
-    margin-left: -18px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #ffd1ec 0 8%, var(--rosa) 35%, #a3226f 85%);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes joystick-ocioso {
-    0%, 86%, 100% {
-        rotate: 0deg;
-    }
-    89% {
-        rotate: -14deg;
-    }
-    93% {
-        rotate: 12deg;
-    }
-    96% {
-        rotate: -5deg;
-    }
-}
-
-/* O joystick aponta para o campo que você está preenchendo */
-.gabinete:has(.campo:nth-child(1) input:focus) .joystick-eixo {
-    animation: none;
-    rotate: -20deg;
-}
-
-.gabinete:has(.campo:nth-child(2) input:focus) .joystick-eixo {
-    animation: none;
-    scale: 1 0.85;
-}
-
-.gabinete:has(.campo:nth-child(3) input:focus) .joystick-eixo,
-.gabinete:has(.campo:nth-child(2):last-child input:focus) .joystick-eixo {
-    animation: none;
-    scale: 1;
-    rotate: 20deg;
-}
-
-.joystick.mexe .joystick-eixo {
-    animation: joystick-mexe 0.4s ease-out;
-}
-
-@keyframes joystick-mexe {
-    30% {
-        rotate: 16deg;
-    }
-    60% {
-        rotate: -10deg;
-    }
-}
-
-/* Botões de fliperama */
-.botoes {
-    display: flex;
-    gap: 22px;
-    align-items: flex-end;
-}
-
-.botao-arcade {
-    --cor: var(--vermelho);
-    --cor-escura: #a3183a;
-    --cor-clara: #ffb3c2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--texto);
-    font-family: var(--fonte-pixel);
-    font-size: 0.5rem;
-    letter-spacing: 0.08em;
-    padding: 4px;
-}
-
-.botao-arcade.azul {
-    --cor: var(--ciano);
-    --cor-escura: #127f95;
-    --cor-clara: #c9f7ff;
-}
-
-.botao-arcade.amarelo {
-    --cor: var(--amarelo);
-    --cor-escura: #a07c00;
-    --cor-clara: #fff1b8;
-}
-
-/* Anel preto + tampa colorida com altura */
-.tampa {
-    display: block;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 32%, var(--cor-clara) 0 10%, var(--cor) 45%, var(--cor-escura) 100%);
-    box-shadow:
-        0 7px 0 var(--cor-escura),
-        0 7px 0 4px #000,
-        0 0 0 4px #000,
-        0 12px 14px rgba(0, 0, 0, 0.6);
-    transition: transform 0.06s, box-shadow 0.06s;
-}
-
-.botao-arcade.pequeno .tampa {
-    width: 44px;
-    height: 44px;
-}
-
-.botao-arcade:hover .tampa {
-    filter: brightness(1.15);
-}
-
-.botao-arcade:active .tampa {
-    transform: translateY(6px);
-    box-shadow:
-        0 1px 0 var(--cor-escura),
-        0 1px 0 4px #000,
-        0 0 0 4px #000,
-        0 4px 6px rgba(0, 0, 0, 0.6),
-        0 0 22px var(--cor);
-}
-
-.botao-arcade:disabled {
-    cursor: progress;
-    opacity: 0.7;
-}
-
-.botao-arcade:focus-visible {
-    outline: 3px dashed var(--amarelo);
-    outline-offset: 4px;
-}
-
-/* Com todas as notas preenchidas, o botão de calcular acende */
-.gabinete:not(:has(.campo input:placeholder-shown)) .botao-arcade.vermelho .tampa {
-    animation: pronto 1s ease-in-out infinite;
-}
-
-@keyframes pronto {
-    50% {
-        box-shadow:
-            0 7px 0 var(--cor-escura),
-            0 7px 0 4px #000,
-            0 0 0 4px #000,
-            0 12px 14px rgba(0, 0, 0, 0.6),
-            0 0 26px 6px var(--cor);
-    }
-}
-
-/* ================= Porta de fichas ================= */
-
-.porta-fichas {
-    position: relative;
-    margin-inline: -16px;
-    padding: 22px 20px 26px;
-    background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 20%),
-        var(--gabinete);
-    border: 3px solid #000;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    display: flex;
-    justify-content: center;
-    gap: 28px;
-}
-
-.fenda {
-    position: relative;
-    width: 96px;
-    padding: 10px 8px 12px;
-    background: linear-gradient(180deg, #4a4566, var(--metal) 40%, #25213a);
-    border: 2px solid #000;
-    border-radius: 6px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.fenda-luz {
-    font-family: var(--fonte-pixel);
-    font-size: 0.42rem;
-    line-height: 1.5;
-    text-align: center;
-    color: #ffd0d8;
-    background: #6d0f24;
-    padding: 4px 6px;
-    border-radius: 2px;
-    text-shadow: 0 0 6px var(--vermelho);
-    box-shadow: 0 0 10px rgba(255, 77, 109, 0.6), inset 0 0 6px rgba(255, 77, 109, 0.8);
-    animation: fenda-pisca 1.6s steps(1) infinite;
-}
-
-.fenda + .fenda .fenda-luz {
-    animation-delay: 0.8s;
-}
-
-@keyframes fenda-pisca {
-    50% {
-        filter: brightness(0.55);
-    }
-}
-
-.fenda-abertura {
-    width: 8px;
-    height: 26px;
-    border-radius: 4px;
-    background: #000;
-    box-shadow: inset 0 0 4px rgba(255, 77, 109, 0.9), 0 0 0 2px #1a1726;
-}
-
-/* A ficha que cai quando você calcula */
-.ficha {
-    position: absolute;
-    left: 50%;
-    bottom: 22px;
-    width: 26px;
-    height: 26px;
-    margin-left: -13px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #fff3b0 0 12%, var(--amarelo) 45%, #a07c00 100%);
-    box-shadow: inset 0 0 0 3px rgba(160, 124, 0, 0.8);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.ficha.caindo {
-    animation: ficha-cai 0.9s cubic-bezier(0.5, 0, 0.8, 0.6);
-}
-
-@keyframes ficha-cai {
-    0% {
-        opacity: 1;
-        transform: translateY(-70px) rotateY(0deg);
-    }
-    60% {
-        opacity: 1;
-        transform: translateY(-4px) rotateY(540deg) scaleX(1);
-    }
-    75% {
-        opacity: 1;
-        transform: translateY(0) rotateY(630deg) scaleX(0.3);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(14px) rotateY(720deg) scaleX(0.1);
     }
 }
 
@@ -1038,9 +599,9 @@ form {
 }
 
 
-/* Botão de calcular dentro da tela: só no celular, onde o painel some */
+/* Botão de calcular */
 .botao {
-    display: none;
+    display: block;
     width: 100%;
     font-family: var(--fonte-pixel);
     font-size: 0.8rem;
@@ -1264,8 +825,7 @@ form {
     display: none !important;
 }
 
-/* Celular: sem o móvel do fliperama. Fica o letreiro e a tela ocupando a largura toda,
-   com o botão de calcular logo abaixo dos campos. */
+/* Celular */
 @media (max-width: 600px) {
     body {
         padding-block: 16px 32px;
@@ -1275,23 +835,8 @@ form {
         gap: 24px;
     }
 
-    .gabinete {
-        filter: none;
-        gap: 14px;
-    }
-
-    .gabinete::after,
-    .corpo::before,
-    .corpo::after,
-    .painel,
-    .porta-fichas {
-        display: none;
-    }
-
     .marquise {
-        margin-inline: 0;
         padding: 22px 16px 18px;
-        border-radius: 12px;
     }
 
     .marquise-topo {
@@ -1299,29 +844,9 @@ form {
         letter-spacing: 0.12em;
     }
 
-    .corpo,
-    .moldura {
-        padding: 0;
-        background: none;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-    }
-
-    .crt {
-        border-radius: 12px;
-        box-shadow:
-            inset 0 0 30px rgba(0, 0, 0, 0.8),
-            0 0 0 3px #000,
-            0 0 0 5px var(--rosa),
-            0 0 18px rgba(255, 102, 196, 0.35);
-    }
-
-    /* Sem o efeito de TV ligando: a tela aparece pronta */
     .crt-conteudo {
         padding: 18px 14px 22px;
         gap: 16px;
-        animation: none;
     }
 
     .campos {
@@ -1331,10 +856,6 @@ form {
 
     .campo input {
         font-size: 1.9rem;
-    }
-
-    .botao {
-        display: block;
     }
 }
 

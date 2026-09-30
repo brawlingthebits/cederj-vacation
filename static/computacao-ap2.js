@@ -31,7 +31,7 @@ document.getElementById('notaForm').onsubmit = async function (event) {
         return;
     }
 
-    // Trava os dois botões de calcular (o do painel e o da tela no celular)
+    // Trava o botão enquanto espera o servidor
     const botoes = document.querySelectorAll('button[type="submit"]');
     botoes.forEach(function (botao) {
         botao.disabled = true;

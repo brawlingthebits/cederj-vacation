@@ -110,10 +110,6 @@ function mostrarPlacar(opcoes) {
     hud.hidden = false;
     reanimar(hud, 'aparecendo');
 
-    // Uma ficha cai na porta de fichas e o joystick dá uma mexida
-    reanimar(document.getElementById('ficha'), 'caindo');
-    reanimar(document.getElementById('joystick'), 'mexe');
-
     if (opcoes.tipo === 'perigo') {
         reanimar(document.getElementById('crt'), 'tremendo');
     } else if (opcoes.tipo === 'ok') {
@@ -133,24 +129,3 @@ function mostrarPlacar(opcoes) {
         });
     }
 }
-
-// Liga a TV uma vez ao abrir a página (só no computador; no celular a tela já aparece pronta)
-(function ligarTela() {
-    const conteudo = document.querySelector('.crt-conteudo');
-    if (!conteudo || semAnimacao || !window.matchMedia('(min-width: 601px)').matches) {
-        return;
-    }
-    conteudo.classList.add('ligando');
-    conteudo.addEventListener('animationend', function fim(event) {
-        if (event.animationName === 'ligar') {
-            conteudo.classList.remove('ligando');
-            conteudo.removeEventListener('animationend', fim);
-        }
-    });
-})();
-
-// O botão LIMPAR apaga as notas e o placar
-document.querySelector('form').addEventListener('reset', function () {
-    document.getElementById('result').hidden = true;
-    document.querySelector('.barra').style.setProperty('--nivel', 0);
-});
